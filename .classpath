@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="spark/jetty-webapp-7.3.0.v20110203.jar"/>
-	<classpathentry kind="lib" path="spark/log4j-1.2.14.jar"/>
-	<classpathentry kind="lib" path="spark/servlet-api-3.0.pre4.jar"/>
-	<classpathentry kind="lib" path="spark/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="spark/slf4j-log4j12-1.6.1.jar"/>
-	<classpathentry kind="lib" path="spark/spark-0.9.9.3-SNAPSHOT-javadoc.jar"/>
-	<classpathentry kind="lib" path="spark/spark-0.9.9.3-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="spark/spark-0.9.9.3-SNAPSHOT.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
+/cygdrive/c/Users/CaioYuri/Dropbox/projetopoo/projetopoo12014/.classpath
