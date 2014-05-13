@@ -9,7 +9,7 @@ Grupo de gasto <select name="grupo">
 <option value="${g.id}">${g.nome}</option>
 </#list>
 </select> <br/>
-Nome <input type="text" name="nome" value=<#if (lancamento.nome)??>${lancamento.nome}</#if> /> <br/>
+Descricao <input type="text" name="descricao" value=<#if (lancamento.descricao)??>${lancamento.descricao}</#if> /> <br/>
 
 <input type="submit" />
 </form>
