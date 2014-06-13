@@ -28,6 +28,9 @@ public class NegocioLancamentos {
 			x = cj.getContaRendimentos();
 		}
 
+		// TODO operacoes de debita e credita
+		// dentro do dominio lançamento
+		// e ai a conta determina seu saldo
 		x.setSaldo(x.getSaldo()
 				+ (l.getValor() * l.getGrupo().getMultiplicador() * l
 						.getConta().getMultiplicador()));
