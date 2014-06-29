@@ -8,10 +8,5 @@ package br.unb.cic.poo.controlefinancas.dominio;
  *
  */
 public interface IPersistenciaConta {
-	public ConjuntoContas listarContas(Usuario usr);
-	
-	public void atualizarConta(Conta c, Usuario usr);
-	
-		
-	
+	public ConjuntoContas listarContas(Usuario usr);	
 }

@@ -7,50 +7,59 @@ import java.util.Collection;
 
 /**
  * @author CaioYuri
+ * 
+ */
+/**
+ * @author CaioYuri
  *
  */
 public abstract class GrupoGasto {
-	
+
 	private Collection<Conta> contas;
-	
+
 	/**
-	 * @author CaioYuri
-	 * Um multiplicador aplicado aos lançamentos realizados neste grupo.
+	 * @author CaioYuri Um multiplicador aplicado aos lançamentos realizados
+	 *         neste grupo.
 	 * @return o multiplicador, geralmente 1 ou -1.
 	 */
-	
-	
+
 	public abstract int getMultiplicador();
+
 	/**
 	 * @return the nome
 	 */
 	public String getNome() {
 		return nome;
 	}
+
 	/**
-	 * @param nome the nome to set
+	 * @param nome
+	 *            the nome to set
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	private String nome;
-	
-	public GrupoGasto()
-	{
+
+	public GrupoGasto() {
 	}
+
 	/**
 	 * @return the contas
 	 */
 	public Collection<Conta> getContas() {
 		return contas;
 	}
+
 	/**
-	 * @param contas the contas to set
+	 * @param contas
+	 *            the contas to set
 	 */
 	public void setContas(Collection<Conta> contas) {
 		this.contas = contas;
 	}
-	
+
 	int id;
 
 	/**
@@ -59,10 +68,23 @@ public abstract class GrupoGasto {
 	public int getId() {
 		return id;
 	}
+
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	
+	/**
+	 * @return representacao textual do tipo do grupo de gasto 
+	 */
+	public abstract String getTipo();
+
+	/**
+	 * @return representacao textual do tipo do grupo de gasto 
+	 */
+	public abstract String getTipoId();
 }

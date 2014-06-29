@@ -9,7 +9,7 @@ package br.unb.cic.poo.controlefinancas.dominio;
  */
 public class Lancamento {
 	private int valor;
-	private int descricao;
+	private String descricao;
 	private Conta conta;
 	private GrupoGasto grupo;
 	int id;
@@ -40,14 +40,14 @@ public class Lancamento {
 	/**
 	 * @return the descricao
 	 */
-	public int getDescricao() {
+	public String getDescricao() {
 		return descricao;
 	}
 	/**
-	 * @param descricao the descricao to set
+	 * @param string the descricao to set
 	 */
-	public void setDescricao(int descricao) {
-		this.descricao = descricao;
+	public void setDescricao(String string) {
+		this.descricao = string;
 	}
 	/**
 	 * @return the conta

@@ -15,7 +15,7 @@ import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 public class UsuarioEmMemoria implements IPersistenciaUsuario {
 
 	private static HashMap<Usuario, String> usuarioStore;
-	private int ultimoId = 0;
+	private static int ultimoId = 0;
 	/**
 	 * 
 	 */

@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="LIB/slf4j-log4j12-1.6.1.jar"/>
 	<classpathentry kind="lib" path="LIB/spark-0.9.9.4-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="LIB/spark-templates.jar"/>
+	<classpathentry kind="lib" path="LIB/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

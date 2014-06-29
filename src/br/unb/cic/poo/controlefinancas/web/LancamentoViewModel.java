@@ -8,6 +8,19 @@ public class LancamentoViewModel {
 	Lancamento lancamento;
 	String mensagem;
 	int idGrupo;
+	int idConta;
+	/**
+	 * @return the idConta
+	 */
+	public int getIdConta() {
+		return idConta;
+	}
+	/**
+	 * @param idConta the idConta to set
+	 */
+	public void setIdConta(int idConta) {
+		this.idConta = idConta;
+	}
 	/**
 	 * @return the idGrupo
 	 */
@@ -57,4 +70,17 @@ public class LancamentoViewModel {
 		GruposGasto = gruposGasto;
 	}
 	Collection<GrupoGasto> GruposGasto;
+	Collection<Conta> contas;
+	/**
+	 * @return the contas
+	 */
+	public Collection<Conta> getContas() {
+		return contas;
+	}
+	/**
+	 * @param contas the contas to set
+	 */
+	public void setContas(Collection<Conta> contas) {
+		this.contas = contas;
+	}
 }

@@ -9,4 +9,8 @@ package br.unb.cic.poo.controlefinancas.dominio;
  */
 public interface IPersistenciaLancamentos {
 	public void criarLancamento(Lancamento l, Usuario usr);
+
+	public Lancamento buscarLancamento(Usuario usr, int parseInt);
+
+	public void alterarLancamento(Lancamento l, Usuario usr);
 }

@@ -5,6 +5,7 @@ package br.unb.cic.poo.controlefinancas.negocio;
 
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.persistencia.PersistenciaSQLite;
 import br.unb.cic.poo.controlefinancas.persistencia.UsuarioEmMemoria;
 
 /**
@@ -17,7 +18,7 @@ public class NegocioUsuario {
 	 * 
 	 */
 	public NegocioUsuario() {
-		persistencia = new UsuarioEmMemoria();
+		persistencia = new PersistenciaSQLite();
 	}
 	
 	public NegocioUsuario(IPersistenciaUsuario persistencia)

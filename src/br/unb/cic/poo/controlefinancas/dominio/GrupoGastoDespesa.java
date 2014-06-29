@@ -14,4 +14,21 @@ public class GrupoGastoDespesa extends GrupoGasto {
 		
 	}
 
+	/* 
+	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getTipo()
+	 */
+	@Override
+	public String getTipo() {
+		
+		return "Despesa";
+	}
+
+	@Override
+	public String getTipoId() {
+		// TODO Auto-generated method stub
+		return "D";
+	}
+
+	
+	
 }

@@ -35,4 +35,13 @@ public class NegocioLancamentos {
 				+ (l.getValor() * l.getGrupo().getMultiplicador() * l
 						.getConta().getMultiplicador()));
 	}
+
+	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
+		// TODO Auto-generated method stub
+		return persLanc.buscarLancamento(usr,parseInt);
+	}
+
+	public void alterarLancamento(Lancamento l, Usuario usr) {
+		persLanc.alterarLancamento(l,usr);
+	}
 }

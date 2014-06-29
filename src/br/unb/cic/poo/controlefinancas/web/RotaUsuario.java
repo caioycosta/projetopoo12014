@@ -66,7 +66,7 @@ public class RotaUsuario {
 	        		 vw = new UsuarioViewModel(null, r.getMensagem());
 	        	 }
 	        	 else {
-	        		 vw = new UsuarioViewModel(null, "Sucesso no cadastro");
+	        		 vw = new UsuarioViewModel(null, "Sucesso no cadastro. ID: " + usr.getId());
 	        	 }
 	        	  
 	        	 return modelAndView(vw, "usuariocadastrar.ftl");
