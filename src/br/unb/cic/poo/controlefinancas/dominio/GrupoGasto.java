@@ -1,5 +1,5 @@
 /**
- * 
+ * @author CaioYuri
  */
 package br.unb.cic.poo.controlefinancas.dominio;
 
@@ -7,11 +7,7 @@ import java.util.Collection;
 
 /**
  * @author CaioYuri
- * 
- */
-/**
- * @author CaioYuri
- *
+ * representa um grupo de gasto
  */
 public abstract class GrupoGasto {
 
@@ -22,19 +18,17 @@ public abstract class GrupoGasto {
 	 *         neste grupo.
 	 * @return o multiplicador, geralmente 1 ou -1.
 	 */
-
 	public abstract int getMultiplicador();
 
 	/**
-	 * @return the nome
+	 * @return o nome
 	 */
 	public String getNome() {
 		return nome;
 	}
 
 	/**
-	 * @param nome
-	 *            the nome to set
+	 * @param nome o nome para setar
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -42,19 +36,22 @@ public abstract class GrupoGasto {
 
 	private String nome;
 
+	
+	/**
+	 * cria um novo obj grupo de gasto
+	 */
 	public GrupoGasto() {
 	}
 
 	/**
-	 * @return the contas
+	 * @return o contas
 	 */
 	public Collection<Conta> getContas() {
 		return contas;
 	}
 
 	/**
-	 * @param contas
-	 *            the contas to set
+	 * @param contas  o contas para setar
 	 */
 	public void setContas(Collection<Conta> contas) {
 		this.contas = contas;
@@ -63,15 +60,14 @@ public abstract class GrupoGasto {
 	int id;
 
 	/**
-	 * @return the id
+	 * @return o id
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id o id para setar
 	 */
 	public void setId(int id) {
 		this.id = id;

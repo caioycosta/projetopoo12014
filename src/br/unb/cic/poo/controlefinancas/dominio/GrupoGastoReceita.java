@@ -1,16 +1,16 @@
 /**
- * 
+ * @author CaioYuri
  */
 package br.unb.cic.poo.controlefinancas.dominio;
 
 /**
  * @author CaioYuri
- *
+ * representa um grupo de gastos tipo receita
  */
 public class GrupoGastoReceita extends GrupoGasto {
 
 	/**
-	 * 
+	 * cria um novo objeto grupo de gasto receita
 	 */
 	public GrupoGastoReceita() {
 		
@@ -24,7 +24,7 @@ public class GrupoGastoReceita extends GrupoGasto {
 		return 1;
 	}
 
-	/* 
+	/** 
 	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getTipo()
 	 */
 	@Override
@@ -33,9 +33,12 @@ public class GrupoGastoReceita extends GrupoGasto {
 		return "Receita";
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getTipoId()
+	 */
 	@Override
 	public String getTipoId() {
-		// TODO Auto-generated method stub
+		
 		return "R";
 	}
 

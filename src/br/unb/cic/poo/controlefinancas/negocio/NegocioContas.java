@@ -1,26 +1,30 @@
 package br.unb.cic.poo.controlefinancas.negocio;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
-import br.unb.cic.poo.controlefinancas.persistencia.*;
 
+/**
+ * @author CaioYuri
+ * regras do negocio para contas
+ */
 public class NegocioContas {
 	private IPersistenciaConta persistencia;
 
-	public NegocioContas() {
-		// TODO Auto-generated constructor stub
-		persistencia = new ContasEmMemoria();
-	}
-
+	/**
+	 * @param pers
+	 * cria um novo obj negocio contas utilizado
+	 * a implementacao de persistencia fornecida
+	 */
 	public NegocioContas(IPersistenciaConta pers) {
 		this.persistencia = pers;
 	}
 
+	/**
+	 * @param usr
+	 * @return conjunto de contas do usuario
+	 * lista as contas do usuário.
+	 */
 	public ConjuntoContas listarContas(Usuario usr) {
 		return persistencia.listarContas(usr);
-	}
-
-	public void atualizarConta(Conta c, Usuario usr) {
-		atualizarConta(c, usr);
 	}
 
 }

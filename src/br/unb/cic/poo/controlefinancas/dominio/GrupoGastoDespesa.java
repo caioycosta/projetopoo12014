@@ -1,20 +1,30 @@
 package br.unb.cic.poo.controlefinancas.dominio;
 
+/**
+ * @author CaioYuri
+ * representa um grupo de gasto tipo despesa
+ */
 public class GrupoGastoDespesa extends GrupoGasto {
 
+	/**
+	 * cria um novo objeto grupo de gasto de despesas
+	 */
 	public GrupoGastoDespesa() {
-		// TODO Auto-generated constructor stub
+	
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getMultiplicador()
+	 */
 	@Override
 	public int getMultiplicador() {
-		// TODO Auto-generated method stub
+		
 		
 		return -1;
 		
 	}
 
-	/* 
+	/** 
 	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getTipo()
 	 */
 	@Override
@@ -23,9 +33,12 @@ public class GrupoGastoDespesa extends GrupoGasto {
 		return "Despesa";
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getTipoId()
+	 */
 	@Override
 	public String getTipoId() {
-		// TODO Auto-generated method stub
+	
 		return "D";
 	}
 

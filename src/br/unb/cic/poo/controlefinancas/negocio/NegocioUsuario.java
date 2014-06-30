@@ -1,31 +1,31 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.negocio;
 
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
-import br.unb.cic.poo.controlefinancas.persistencia.PersistenciaSQLite;
-import br.unb.cic.poo.controlefinancas.persistencia.UsuarioEmMemoria;
 
 /**
  * @author CaioYuri
- *
+ * regras de negocio do usuario
  */
 public class NegocioUsuario {
 	IPersistenciaUsuario persistencia;
-	/**
-	 * 
-	 */
-	public NegocioUsuario() {
-		persistencia = new PersistenciaSQLite();
-	}
 	
+	
+	/**
+	 * @param persistencia
+	 * cria um novo negocio usuario com a classe de persistencia fornecida
+	 */
 	public NegocioUsuario(IPersistenciaUsuario persistencia)
 	{
 		this.persistencia = persistencia;
 	}
 	
+	/**
+	 * @param usr
+	 * @param senha
+	 * @return resultado da operacao
+	 * cadastra um novo usuario
+	 */
 	public ResultadoOperacao CadastrarUsuario(Usuario usr, String senha)
 	{
 		if (usr.getNome() == null || usr.getNome().isEmpty())
@@ -38,6 +38,13 @@ public class NegocioUsuario {
 		return new ResultadoOperacao(true);
 	}
 
+	
+	/**
+	 * @param login
+	 * @param senha
+	 * @return resultado da operacao
+	 * faz login do usuario. retorna null se dados invalidos.
+	 */
 	public ResultadoOperacaoG<Usuario> loginUsuario(String login,
 			String senha) {
 		Usuario resultado = persistencia.loginUsuario(login, senha);

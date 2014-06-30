@@ -1,24 +1,21 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.dominio;
 
 /**
  * @author CaioYuri
- *
+ * representa um usuario do sistema
  */
 public class Usuario {
 	private String nome;	
 	private String login;
 	/**
-	 * @return the login
+	 * @return o login
 	 */
 	public String getLogin() {
 		return login;
 	}
 
 	/**
-	 * @param login the login to set
+	 * @param login o login para setar
 	 */
 	public void setLogin(String login) {
 		this.login = login;
@@ -69,11 +66,19 @@ public class Usuario {
 		return true;
 	}
 
+	/**
+	 *  constroi um novo obj usuario
+	 */
 	public Usuario()
 	{
 		
 	}
 	
+	/**
+	 * @param nome
+	 * @param id
+	 * constroi um novo obj usuario
+	 */
 	public Usuario(String nome, int id)
 	{
 		setId(id);
@@ -81,26 +86,26 @@ public class Usuario {
 	}
 	
 	/**
-	 * @return the id
+	 * @return o id
 	 */
 	public int getId() {
 		return id;
 	}
 	/**
-	 * @param id the id to set
+	 * @param id o id para setar
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 	/**
-	 * @return the name
+	 * @return o name
 	 */
 	public String getNome() {
 		return nome;
 	}
 	
 	/**
-	 * @param name the name to set
+	 * @param name o name para setar
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.web;
 
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
@@ -12,10 +9,14 @@ import spark.template.freemarker.FreeMarkerRoute;
 
 /**
  * @author CaioYuri
- *
+ * modulo de operacoes com usuario.
  */
-public class RotaUsuario {
-	public static void DefinirSubRotas(String nomeRota)
+public class RotaUsuario extends Rota {
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.web.Rota#DefinirSubRotas(java.lang.String)
+	 */
+	@Override
+	public void DefinirSubRotas(String nomeRota)
 	{
 		Spark.get(new FreeMarkerRoute(nomeRota + "/cadastrar") {
 	         @Override
@@ -34,7 +35,7 @@ public class RotaUsuario {
 		Spark.post(new FreeMarkerRoute(nomeRota + "/login") {
 			@Override
 			public Object tempHandle(Request request, Response response) {
-				NegocioUsuario ng = new NegocioUsuario();
+				NegocioUsuario ng = getFabrica().criarNegocioUsuario();
 				ResultadoOperacaoG<Usuario> r = ng.loginUsuario(request.queryParams("login"), request.queryParams("senha"));
 				UsuarioViewModel vw;
 				if (!r.isSucesso())
@@ -58,7 +59,7 @@ public class RotaUsuario {
 	        	 usr.setLogin(request.queryParams("login"));
 	        	 String senha = request.queryParams("senha");
 	        	 
-	        	 NegocioUsuario ng = new NegocioUsuario();
+	        	 NegocioUsuario ng = getFabrica().criarNegocioUsuario();
 	        	 ResultadoOperacao r = ng.CadastrarUsuario(usr, senha);
 	        	 UsuarioViewModel vw;
 	        	 if (!r.isSucesso())

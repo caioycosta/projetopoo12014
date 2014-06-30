@@ -1,18 +1,18 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.persistencia;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
 
 /**
  * @author CaioYuri
- * 
+ * persiste lancamentos em memoria
  */
 public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 
 	static int ultimoid = 0;
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#criarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento, br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 */
 	@Override
 	public void criarLancamento(Lancamento l, Usuario usr) {
 		l.setId(++ultimoid);
@@ -21,6 +21,9 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 		
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#buscarLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, int)
+	 */
 	@Override
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
 		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);
@@ -54,12 +57,46 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 		return l;
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#alterarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento, br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 */
 	@Override
 	public void alterarLancamento(Lancamento l, Usuario usr) {
+		excluirLancamento(usr, l);
+		criarLancamentoId(l, usr);
+	}
+
+	/**
+	 * @param l
+	 * @param usr
+	 * cia um lancamento reaproveitando o id ja configurado no obj
+	 */
+	private void criarLancamentoId(Lancamento l, Usuario usr) {
 		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);
 
 		ContasEmMemoria c = new ContasEmMemoria();
 
+		ConjuntoContas cj = c.listarContas(u);
+
+		
+
+		if (l.getConta() instanceof ContaAtivos) {
+			cj.getContaAtivos().getLancamentos().add(l);
+		} else if (l.getConta() instanceof ContaPassivos) {
+			cj.getContaPassivos().getLancamentos().add(l);
+		} else if (l.getConta() instanceof ContaDespesas) {
+			cj.getContaDespesas().getLancamentos().add(l);
+		} else if (l.getConta() instanceof ContaRendimentos) {
+			cj.getContaRendimentos().getLancamentos().add(l);
+		}
+	}
+
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.Lancamento)
+	 */
+	@Override
+	public void excluirLancamento(Usuario u, Lancamento l) {
+		ContasEmMemoria c = new ContasEmMemoria();
 		ConjuntoContas cj = c.listarContas(u);
 
 		Conta cn = null;
@@ -94,26 +131,6 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 		}
 		
 		cn.getLancamentos().remove(lc);
-		criarLancamentoId(l, usr);
-	}
-
-	private void criarLancamentoId(Lancamento l, Usuario usr) {
-		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);
-
-		ContasEmMemoria c = new ContasEmMemoria();
-
-		ConjuntoContas cj = c.listarContas(u);
-
 		
-
-		if (l.getConta() instanceof ContaAtivos) {
-			cj.getContaAtivos().getLancamentos().add(l);
-		} else if (l.getConta() instanceof ContaPassivos) {
-			cj.getContaPassivos().getLancamentos().add(l);
-		} else if (l.getConta() instanceof ContaDespesas) {
-			cj.getContaDespesas().getLancamentos().add(l);
-		} else if (l.getConta() instanceof ContaRendimentos) {
-			cj.getContaRendimentos().getLancamentos().add(l);
-		}
 	}
 }

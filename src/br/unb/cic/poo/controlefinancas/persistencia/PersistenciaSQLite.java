@@ -1,6 +1,3 @@
-/**
- * @author CaioYuri
- */
 package br.unb.cic.poo.controlefinancas.persistencia;
 
 import java.util.ArrayList;
@@ -25,7 +22,8 @@ import java.sql.*;
 import org.sqlite.SQLiteConfig;
 
 /**
- * @author CaioYuri Implementacao concreta da persistencia em um banco de dados
+ * @author CaioYuri 
+ * Implementacao concreta da persistencia em um banco de dados
  *         SQLite.
  */
 public class PersistenciaSQLite implements IPersistenciaConta,
@@ -90,6 +88,14 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setInt(5, usr.getId());
 			ps.setInt(6, l.getId());
 			ps.executeUpdate();
+
+			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
+					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
+			ps.setInt(1, l.getConta().getSaldo());
+			ps.setInt(2, l.getConta().getId());
+			ps.setInt(3, usr.getId());
+			ps.executeUpdate();
+
 			CommitEFechar();
 		} catch (SQLException e) {
 			RollbackEFechar();
@@ -301,6 +307,13 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			else
 				ps.setInt(4, l.getGrupo().getId());
 
+			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
+					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
+			ps.setInt(1, l.getConta().getSaldo());
+			ps.setInt(2, l.getConta().getId());
+			ps.setInt(3, usr.getId());
+			ps.executeUpdate();
+
 			CommitEFechar();
 		} catch (SQLException e) {
 			RollbackEFechar();
@@ -330,8 +343,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * @param q
-	 *            a query a ser executada
+	 * @param q a query a ser executada
 	 * @return ResultSet da consulta
 	 * @throws SQLException
 	 */
@@ -482,6 +494,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 * @param usr
 	 * @param x
 	 * @throws SQLException
+	 * busca os lancamentos de uma conta
 	 */
 	private void preencherLancamentos(Usuario usr, Conta x) throws SQLException {
 		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR FROM LANCAMENTO WHERE ID_USUARIO = ? AND ID_CONTA = ?;";
@@ -522,4 +535,34 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			throw new RuntimeException(e);
 		}
 	}
+
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.Lancamento)
+	 */
+	@Override
+	public void excluirLancamento(Usuario usr, Lancamento l) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("DELETE FROM LANCAMENTO "
+							+ "WHERE ID_USUARIO = ? AND "
+							+ "ID_LANCAMENTO = ?;");
+			ps.setInt(1, usr.getId());
+			ps.setInt(2, l.getId());
+			ps.executeUpdate();
+
+			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
+					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
+			ps.setInt(1, l.getConta().getSaldo());
+			ps.setInt(2, l.getConta().getId());
+			ps.setInt(3, usr.getId());
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.persistencia;
 
 import java.util.*;
@@ -9,7 +6,7 @@ import br.unb.cic.poo.controlefinancas.dominio.*;
 
 /**
  * @author CaioYuri
- *
+ * persiste grupos de gasto em memoria
  */
 public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 	private static HashMap<Usuario, Collection<GrupoGasto>> grpStore;
@@ -19,6 +16,9 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 		grpStore = new HashMap<Usuario,Collection<GrupoGasto>>();
 	}
 	static int ultimoid = 0;
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#criarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.GrupoGasto)
+	 */
 	@Override
 	public void criarGrupoGasto(Usuario usr, GrupoGasto grp) {
 		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);
@@ -34,6 +34,9 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 		grpStore.get(u).add(grp);
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#listarGruposGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 */
 	@Override
 	public Collection<GrupoGasto> listarGruposGasto(Usuario usr) {
 		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);
@@ -47,6 +50,9 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 		return grpStore.get(u);
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto, br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 */
 	/**
 	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto, br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
@@ -71,7 +77,7 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 	 */
 	@Override
 	public void excluirGrupoGasto(Usuario usr, int parseInt) {
-		// TODO Auto-generated method stub
+	
 		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);
 		GrupoGasto remover = null;
 		for (GrupoGasto gg : grpStore.get(u))

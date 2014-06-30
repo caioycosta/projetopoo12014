@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.persistencia;
 
 import java.util.HashMap;
@@ -9,20 +6,20 @@ import br.unb.cic.poo.controlefinancas.dominio.*;
 
 /**
  * @author CaioYuri
- * 
+ * persiste contas em memoria
  */
 public class ContasEmMemoria implements IPersistenciaConta {
 
 	private static HashMap<Usuario, ConjuntoContas> contasPorUsuario;
 	private static int ultimoId;
 
-	/**
-	 * @param contasPorUsuario
-	 */
 	static {
 		contasPorUsuario = new HashMap<Usuario, ConjuntoContas>();
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 */
 	@Override
 	public ConjuntoContas listarContas(Usuario usr) {
 		// obter a referencia ao usuario da persistencia
@@ -45,4 +42,6 @@ public class ContasEmMemoria implements IPersistenciaConta {
 
 		return contasPorUsuario.get(u);
 	}
+
+	
 }

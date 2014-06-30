@@ -1,28 +1,33 @@
-/**
- * 
- */
 package br.unb.cic.poo.controlefinancas.web;
 
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 
 /**
  * @author CaioYuri
- * 
+ * usado para enviar/receber dados da view de usuario
  */
 public class UsuarioViewModel {
-	/**
-	 * @param usr
-	 * @param mensagem
-	 */
 
+	/**
+	 * constroi um novo view model usuario
+	 */
 	public UsuarioViewModel() {
 
 	}
 
+	/**
+	 * @param usr
+	 *  constroi um novo view model usuario
+	 */
 	public UsuarioViewModel(Usuario usr) {
 		this.usr = usr;
 	}
 
+	/**
+	 * @param usr
+	 * @param mensagem
+	 * constroi um novo view model usuario
+	 */
 	public UsuarioViewModel(Usuario usr, String mensagem) {
 		this.usr = usr;
 		this.mensagem = mensagem;
@@ -31,30 +36,28 @@ public class UsuarioViewModel {
 	Usuario usr;
 
 	/**
-	 * @return the usr
+	 * @return o usr
 	 */
 	public Usuario getUsr() {
 		return usr;
 	}
 
 	/**
-	 * @param usr
-	 *            the usr to set
+	 * @param usr o usr para setar
 	 */
 	public void setUsr(Usuario usr) {
 		this.usr = usr;
 	}
 
 	/**
-	 * @return the mensagem
+	 * @return o mensagem
 	 */
 	public String getMensagem() {
 		return mensagem;
 	}
 
 	/**
-	 * @param mensagem
-	 *            the mensagem to set
+	 * @param mensagem  o mensagem para setar
 	 */
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;

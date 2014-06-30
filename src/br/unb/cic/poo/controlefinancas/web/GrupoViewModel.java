@@ -2,18 +2,26 @@ package br.unb.cic.poo.controlefinancas.web;
 
 import br.unb.cic.poo.controlefinancas.dominio.GrupoGasto;
 
+/**
+ * @author CaioYuri
+ * usado para enviar/receber dados da view de grupos de gasto
+ */
 public class GrupoViewModel {
 		GrupoGasto grp;
 		
+		
 		/**
-		 * @param grp
 		 * @param mensagem
+		 * cria um novo obj grupo view model
 		 */
 		public GrupoViewModel(String mensagem) {
 			
 			this.mensagem = mensagem;
 		}
 		
+		/**
+		 * cria um novo obj grupo view model
+		 */
 		public GrupoViewModel(){
 			
 		}
@@ -21,6 +29,7 @@ public class GrupoViewModel {
 		/**
 		 * @param grp
 		 * @param mensagem
+		 * cria um novo obj grupo view model
 		 */
 		public GrupoViewModel(GrupoGasto grp, String mensagem) {
 			super();
@@ -28,25 +37,25 @@ public class GrupoViewModel {
 			this.mensagem = mensagem;
 		}
 		/**
-		 * @return the grp
+		 * @return o grp
 		 */
 		public GrupoGasto getGrp() {
 			return grp;
 		}
 		/**
-		 * @param grp the grp to set
+		 * @param grp o grp para setar
 		 */
 		public void setGrp(GrupoGasto grp) {
 			this.grp = grp;
 		}
 		/**
-		 * @return the mensagem
+		 * @return o mensagem
 		 */
 		public String getMensagem() {
 			return mensagem;
 		}
 		/**
-		 * @param mensagem the mensagem to set
+		 * @param mensagem o mensagem para setar
 		 */
 		public void setMensagem(String mensagem) {
 			this.mensagem = mensagem;

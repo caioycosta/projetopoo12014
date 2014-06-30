@@ -3,13 +3,17 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="LIB/freemarker.jar"/>
-	<classpathentry kind="lib" path="LIB/jetty-webapp-7.3.0.v20110203.jar"/>
 	<classpathentry kind="lib" path="LIB/log4j-1.2.14.jar"/>
-	<classpathentry kind="lib" path="LIB/servlet-api-3.0.pre4.jar"/>
 	<classpathentry kind="lib" path="LIB/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="LIB/slf4j-log4j12-1.6.1.jar"/>
-	<classpathentry kind="lib" path="LIB/spark-0.9.9.4-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="LIB/spark-templates.jar"/>
 	<classpathentry kind="lib" path="LIB/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="LIB/jetty-server-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="LIB/jetty-util-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="LIB/jetty-webapp-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="LIB/servlet-api-3.1.jar"/>
+	<classpathentry kind="lib" path="LIB/jetty-io-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="LIB/jetty-http-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="LIB/spark-custom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -5,26 +5,30 @@ package br.unb.cic.poo.controlefinancas.dominio;
 
 /**
  * @author CaioYuri
- *
+ * representa uma conta de rendimentos
  */
 public class ContaRendimentos extends Conta {
 
 	/**
-	 * 
+	 * cria um novo objeto conta de rendimentos
 	 */
 	public ContaRendimentos() {
-		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.Conta#getMultiplicador()
+	 */
 	@Override
 	public int getMultiplicador() {
-		// TODO Auto-generated method stub
+		
 		return 1;
 	}
 
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.Conta#getNome()
+	 */
 	@Override
 	public String getNome() {
-		// TODO Auto-generated method stub
 		return "Rendimentos";
 	}
 
