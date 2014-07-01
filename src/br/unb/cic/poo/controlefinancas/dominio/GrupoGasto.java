@@ -3,6 +3,7 @@
  */
 package br.unb.cic.poo.controlefinancas.dominio;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -14,7 +15,7 @@ public abstract class GrupoGasto {
 	private Collection<Conta> contas;
 
 	/**
-	 * @author CaioYuri Um multiplicador aplicado aos lançamentos realizados
+	 * Um multiplicador aplicado aos lançamentos realizados
 	 *         neste grupo.
 	 * @return o multiplicador, geralmente 1 ou -1.
 	 */
@@ -41,6 +42,7 @@ public abstract class GrupoGasto {
 	 * cria um novo obj grupo de gasto
 	 */
 	public GrupoGasto() {
+		this.contas = new ArrayList<Conta>();
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package br.unb.cic.poo.controlefinancas.negocio;
 
+import java.util.Collection;
+
 import br.unb.cic.poo.controlefinancas.dominio.*;
 
 /**
@@ -8,13 +10,14 @@ import br.unb.cic.poo.controlefinancas.dominio.*;
  */
 public class NegocioLancamentos {
 	private IPersistenciaLancamentos persLanc;
-
+	private IPersistenciaGrupoGasto persGrup;
 	/**
 	 * @param p implementacao de persistencia
 	 * cria um novo negocio lancamentos com a implementacao de persistencia fornecida
 	 */
-	public NegocioLancamentos(IPersistenciaLancamentos p) {
+	public NegocioLancamentos(IPersistenciaLancamentos p, IPersistenciaGrupoGasto persGrup) {
 		persLanc = p;
+		this.persGrup = persGrup; 
 	}
 
 	/**
@@ -34,7 +37,15 @@ public class NegocioLancamentos {
 	 * busca um lancamento por id
 	 */
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {		
-		return persLanc.buscarLancamento(usr,parseInt);
+		Lancamento l = persLanc.buscarLancamento(usr,parseInt);
+		Collection<GrupoGasto> gg = persGrup.listarGruposGasto(usr);
+		for (GrupoGasto g : gg)
+		{
+			if (g.getId() == l.getGrupo().getId()) {
+				l.setGrupo(g);
+			}
+		}
+		return l;
 	}
 
 	/**
@@ -55,7 +66,8 @@ public class NegocioLancamentos {
 	 */
 	public void excluirLancamento(Usuario usr, int parseInt) {
 		Lancamento l = buscarLancamento(usr,parseInt);
-		l.debitar();
+		
+		l.debitar(); 
 		persLanc.excluirLancamento(usr, l);
 	}
 }

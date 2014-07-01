@@ -29,9 +29,13 @@ public abstract class Fabrica {
 	 * cria um NegocioLancamentos
 	 */
 	public NegocioLancamentos criarNegocioLancamentos() {
-		return new NegocioLancamentos(criarPersistenciaLancamentos());
+		return new NegocioLancamentos(criarPersistenciaLancamentos(), criarPersistenciaGrupoGasto());
 	}
 
+	public NegocioRelatorios criarNegocioRelatorios() {
+		return new NegocioRelatorios(criarPersistenciaConta());
+	}
+	
 	/**
 	 * @return uma instancia de NegocioContas
 	 * cria um NegocioContas

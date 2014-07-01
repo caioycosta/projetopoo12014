@@ -14,9 +14,9 @@ public class FiltroAutenticacao  extends Filter {
 		    public void handle(Request request, Response response) {
 		    	
 		    	if (request.session().attribute("usuario") == null
-		    			&& !request.pathInfo().equals( "/usuario/login")
-		    			&& !request.pathInfo().startsWith("/static")
-		    			&& !request.pathInfo().equals("/usuario/cadastrar")) {
+		    			&& !request.pathInfo().toLowerCase().equals( "/usuario/login")
+		    			&& !request.pathInfo().toLowerCase().startsWith("/static")
+		    			&& !request.pathInfo().toLowerCase().equals("/usuario/cadastrar")) {
 		            {
 		            	response.redirect("/usuario/login");
 		            	halt();

@@ -5,6 +5,7 @@ package br.unb.cic.poo.controlefinancas.dominio;
 
 /**
  * @author CaioYuri
+ * 
  * Representa o conjunto (fixo) de contas de um
  * usuário, isto é, conta de ativos, conta de passivos,
  * conta de rendimentos e conta de despesas.

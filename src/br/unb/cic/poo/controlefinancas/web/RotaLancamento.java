@@ -1,5 +1,7 @@
 package br.unb.cic.poo.controlefinancas.web;
 
+import java.util.ArrayList;
+
 import br.unb.cic.poo.controlefinancas.dominio.*;
 import br.unb.cic.poo.controlefinancas.negocio.*;
 import spark.Request;
@@ -12,11 +14,18 @@ import spark.template.freemarker.FreeMarkerRoute;
  * modulo de lancamentos
  */
 public class RotaLancamento extends Rota {
+	
+	private void preencherViewModelBase(ViewModelBase vwb) {
+		vwb.setCategoriaAtual("Lancamento");
+		vwb.setListaPaginas(new ArrayList<String>());
+		vwb.getListaPaginas().add("Criar");
+	}
+	
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.web.Rota#DefinirSubRotas(java.lang.String)
+	 * @see br.unb.cic.poo.controlefinancas.web.Rota#definirSubRotasProtected(java.lang.String)
 	 */
 	@Override
-	public void DefinirSubRotas(String nomeRota) {
+	protected void definirSubRotasProtected(String nomeRota) {
 		Spark.get(new FreeMarkerRoute(nomeRota + "/excluir/:id") {
 			@Override
 			public Object tempHandle(Request request, Response response) {
@@ -42,14 +51,19 @@ public class RotaLancamento extends Rota {
 
 				Lancamento l = nl.buscarLancamento(usr,
 						Integer.parseInt(request.params(":id")));
-				LancamentoViewModel lvw = new LancamentoViewModel();
+				LancamentoViewModel vwb = new LancamentoViewModel();
 
-				lvw.setGruposGasto(ng.listarGruposGasto(usr));
-				lvw.setContas(l.getGrupo().getContas());
-				lvw.setIdGrupo(l.getGrupo().getId());
-				lvw.setLancamento(l);
+				vwb.setGruposGasto(ng.listarGruposGasto(usr));
+				vwb.setContas(l.getGrupo().getContas());
+				vwb.setIdGrupo(l.getGrupo().getId());
+				vwb.setLancamento(l);
 
-				return modelAndView(lvw, "lancamentocriar.ftl");
+				vwb.setInfo("Digite os novos dados do lançamento.");
+				vwb.setTitulo("Edição de lançamento");
+				vwb.setDescricaoView("Alterar um lançamento existente");
+				preencherViewModelBase(vwb);
+				
+				return modelAndView(vwb, "lancamentocriar.ftl");
 			}
 		});
 
@@ -63,14 +77,14 @@ public class RotaLancamento extends Rota {
 				NegocioGrupoGasto g = getFabrica().criarNegocioGrupoGasto();
 				NegocioContas c = getFabrica().criarNegocioContas();
 
-				LancamentoViewModel lancVwModel = new LancamentoViewModel();
+				LancamentoViewModel vwb = new LancamentoViewModel();
 
-				lancVwModel.setGruposGasto(g.listarGruposGasto(usr));
-				lancVwModel.setIdGrupo(idGrupoGasto);
+				vwb.setGruposGasto(g.listarGruposGasto(usr));
+				vwb.setIdGrupo(idGrupoGasto);
 				GrupoGasto gruposelecionado = null;
-				for (GrupoGasto grp : lancVwModel.getGruposGasto()) {
+				for (GrupoGasto grp : vwb.getGruposGasto()) {
 					if (grp.getId() == idGrupoGasto) {
-						lancVwModel.setContas(grp.getContas());
+						vwb.setContas(grp.getContas());
 						gruposelecionado = grp;
 					}
 				}
@@ -104,10 +118,15 @@ public class RotaLancamento extends Rota {
 
 					nl.alterarLancamento(l, usr);
 
-					lancVwModel.setMensagem("Lancamento cadastro OK");
+					vwb.setMensagem("Lancamento cadastro OK");
 				}
 
-				return modelAndView(lancVwModel, "lancamentocriar.ftl");
+				
+				vwb.setInfo("Digite os novos dados do lançamento.");
+				vwb.setTitulo("Edição de lançamento");
+				vwb.setDescricaoView("Alterar um lançamento existente");
+				preencherViewModelBase(vwb);
+				return modelAndView(vwb, "lancamentocriar.ftl");
 			}
 		});
 
@@ -118,11 +137,17 @@ public class RotaLancamento extends Rota {
 
 				NegocioGrupoGasto g = getFabrica().criarNegocioGrupoGasto();
 
-				LancamentoViewModel lvw = new LancamentoViewModel();
+				LancamentoViewModel vwb = new LancamentoViewModel();
 
-				lvw.setGruposGasto(g.listarGruposGasto(usr));
+				vwb.setGruposGasto(g.listarGruposGasto(usr));
 
-				return modelAndView(lvw, "lancamentocriar.ftl");
+				
+				vwb.setInfo("Digite os dados do novo lançamento.");
+				vwb.setTitulo("Criação de lançamento");
+				vwb.setDescricaoView("Criar um novo lançamento");
+				preencherViewModelBase(vwb);
+				
+				return modelAndView(vwb, "lancamentocriar.ftl");
 			}
 		});
 
@@ -136,14 +161,14 @@ public class RotaLancamento extends Rota {
 				NegocioGrupoGasto g = getFabrica().criarNegocioGrupoGasto();
 				NegocioContas c = getFabrica().criarNegocioContas();
 
-				LancamentoViewModel lancVwModel = new LancamentoViewModel();
+				LancamentoViewModel vwb = new LancamentoViewModel();
 
-				lancVwModel.setGruposGasto(g.listarGruposGasto(usr));
-				lancVwModel.setIdGrupo(idGrupoGasto);
+				vwb.setGruposGasto(g.listarGruposGasto(usr));
+				vwb.setIdGrupo(idGrupoGasto);
 				GrupoGasto gruposelecionado = null;
-				for (GrupoGasto grp : lancVwModel.getGruposGasto()) {
+				for (GrupoGasto grp : vwb.getGruposGasto()) {
 					if (grp.getId() == idGrupoGasto) {
-						lancVwModel.setContas(grp.getContas());
+						vwb.setContas(grp.getContas());
 						gruposelecionado = grp;
 					}
 				}
@@ -175,11 +200,21 @@ public class RotaLancamento extends Rota {
 							.criarNegocioLancamentos();
 					nl.criarLancamento(l, usr);
 
-					lancVwModel.setMensagem("Lancamento cadastro OK");
+					vwb.setMensagem("Lancamento cadastro OK");
 				}
 
-				return modelAndView(lancVwModel, "lancamentocriar.ftl");
+				vwb.setInfo("Digite os dados do novo lançamento.");
+				vwb.setTitulo("Criação de lançamento");
+				vwb.setDescricaoView("Criar um novo lançamento");
+				preencherViewModelBase(vwb);
+				return modelAndView(vwb, "lancamentocriar.ftl");
 			}
 		});
+	}
+
+	@Override
+	protected String getRotaPadrao() {
+		
+		return "/criar";
 	}
 }

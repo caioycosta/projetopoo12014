@@ -1,6 +1,4 @@
-<html>
-<body>
-</body>
+<#include "header.ftl">
 <h1>Cadastrar novo Lançamento</h1>
 <#if (mensagem)??>${mensagem}<#else>Digite os dados.</#if> </br>
 <form method="post">
@@ -30,4 +28,4 @@ Valor <input type="text" name="valor" value="<#if (lancamento.valor)??>${lancame
 
 <input type="submit" />
 </form>
-</html>
+<#include "footer.ftl">

@@ -1,6 +1,4 @@
-<html>
-<body>
-</body>
+<#include "header.ftl">
 <h1>Cadastrar novo Grupo de Gasto</h1>
 <#if (mensagem)??>${mensagem}<#else>Digite os dados.</#if> </br>
 <form method="post">
@@ -31,4 +29,4 @@ Tipo de grupo
 <input type="checkbox" name="contaDespesas" value="1" <#if despesas == 1>checked</#if> /> Conta de despesas<br/>
 <input type="submit" />
 </form>
-</html>
+<#include "footer.ftl">

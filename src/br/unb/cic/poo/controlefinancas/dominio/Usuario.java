@@ -105,7 +105,7 @@ public class Usuario {
 	}
 	
 	/**
-	 * @param name o name para setar
+	 * @param nome o name para setar
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;

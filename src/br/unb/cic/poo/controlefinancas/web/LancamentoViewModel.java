@@ -8,7 +8,7 @@ import br.unb.cic.poo.controlefinancas.dominio.*;
  * @author CaioYuri
  * usado para enviar/receber dados da view de grupos de lancamento
  */
-public class LancamentoViewModel {
+public class LancamentoViewModel extends ViewModelBase {
 	Lancamento lancamento;
 	String mensagem;
 	int idGrupo;

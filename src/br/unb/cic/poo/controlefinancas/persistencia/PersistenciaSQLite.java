@@ -22,8 +22,7 @@ import java.sql.*;
 import org.sqlite.SQLiteConfig;
 
 /**
- * @author CaioYuri 
- * Implementacao concreta da persistencia em um banco de dados
+ * @author CaioYuri Implementacao concreta da persistencia em um banco de dados
  *         SQLite.
  */
 public class PersistenciaSQLite implements IPersistenciaConta,
@@ -41,7 +40,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		String d = "DELETE FROM GRUPO_CONTA WHERE ID_GRUPO_GASTO = ?;";
 		Conectar();
 		try {
-			PreparedStatement p = con.prepareStatement(d);
+			PreparedStatement p = con.prepareStatement(d); p.setInt(1, grp.getId());
 			p.executeUpdate();
 
 			p = con.prepareStatement(q);
@@ -110,7 +109,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	@Override
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
 		String slc = "SELECT ID_LANCAMENTO, VALOR, DESCRICAO, ID_TIPO_CONTA, "
-				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO FROM "
+				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.SALDO, CONTA.ID_CONTA FROM "
 				+ "LANCAMENTO INNER JOIN CONTA ON LANCAMENTO.ID_CONTA = CONTA.ID_CONTA "
 				+ "INNER JOIN GRUPO_GASTO ON LANCAMENTO.ID_GRUPO_GASTO = GRUPO_GASTO.ID_GRUPO_GASTO "
 				+ "WHERE LANCAMENTO.ID_USUARIO = ? AND ID_LANCAMENTO = ?;";
@@ -142,9 +141,11 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 					break;
 				}
 				l.setConta(x);
+				x.setSaldo(rs.getInt(7));
+				x.setId(rs.getInt(8));
 
 				if (rs.getObject(6) != null) {
-					GrupoGasto g = rs.getString(6) == "D" ? new GrupoGastoDespesa()
+					GrupoGasto g = rs.getString(6).equals("D") ? new GrupoGastoDespesa()
 							: new GrupoGastoReceita();
 					g.setId(rs.getInt(5));
 					l.setGrupo(g);
@@ -228,30 +229,30 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		String q = "INSERT INTO CONTA (ID_TIPO_CONTA, ID_USUARIO, NOME, SALDO) VALUES (?,?,?,?);";
 		PreparedStatement p = con.prepareStatement(q);
 		p.setString(1, "A");
-		p.setInt(2, 0);
+		p.setInt(2, usr.getId());
 		p.setString(3, "Ativos");
-		p.setInt(4, usr.getId());
+		p.setInt(4, 0);
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "P");
-		p.setInt(2, 0);
+		p.setInt(2, usr.getId());
 		p.setString(3, "Passivos");
-		p.setInt(4, usr.getId());
+		p.setInt(4,0);
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "R");
-		p.setInt(2, 0);
+		p.setInt(2, usr.getId());
 		p.setString(3, "Rendimentos");
-		p.setInt(4, usr.getId());
+		p.setInt(4, 0);
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "D");
-		p.setInt(2, 0);
+		p.setInt(2, usr.getId());
 		p.setString(3, "Despesas");
-		p.setInt(4, usr.getId());
+		p.setInt(4, 0);
 		p.executeUpdate();
 	}
 
@@ -296,17 +297,18 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	@Override
 	public void criarLancamento(Lancamento l, Usuario usr) {
 		Conectar();
-		String s = "INSERT INTO LANCAMENTO (DESCRICAO, VALOR, ID_CONTA, ID_GRUPO_GASTO) VALUES (?,?,?,?);";
+		String s = "INSERT INTO LANCAMENTO (DESCRICAO, VALOR, ID_CONTA, ID_GRUPO_GASTO, ID_USUARIO) VALUES (?,?,?,?,?);";
 		try {
 			PreparedStatement ps = con.prepareStatement(s);
 			ps.setString(1, l.getDescricao());
 			ps.setInt(2, l.getValor());
 			ps.setInt(3, l.getConta().getId());
+			ps.setInt(5,usr.getId());
 			if (l.getGrupo() == null)
 				ps.setNull(4, java.sql.Types.INTEGER);
 			else
 				ps.setInt(4, l.getGrupo().getId());
-
+			ps.executeUpdate();
 			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
 					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
 			ps.setInt(1, l.getConta().getSaldo());
@@ -334,7 +336,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			PreparedStatement ps = con.prepareStatement(q);
 			ps.setInt(1, usr.getId());
 			ps.setInt(2, parseInt);
-			ps.executeQuery();
+			ps.executeUpdate();
 			CommitEFechar();
 		} catch (SQLException e) {
 			RollbackEFechar();
@@ -343,7 +345,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * @param q a query a ser executada
+	 * @param q
+	 *            a query a ser executada
 	 * @return ResultSet da consulta
 	 * @throws SQLException
 	 */
@@ -368,6 +371,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 */
 	@Override
 	public ConjuntoContas listarContas(Usuario usr) {
+		Conectar();
 		try {
 			ConjuntoContas cj = new ConjuntoContas();
 
@@ -431,7 +435,13 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 */
 	@Override
 	public Collection<GrupoGasto> listarGruposGasto(Usuario usr) {
-		String p = "SELECT ID_GRUPO_GASTO, NOME, ID_TIPO_GRUPO_GASTO FROM GRUPO_GASTO WHERE ID_USUARIO = ?;";
+		String p = "SELECT GRUPO_GASTO.ID_GRUPO_GASTO, GRUPO_GASTO.NOME, "
+				+ "GRUPO_GASTO.ID_TIPO_GRUPO_GASTO, CONTA.ID_TIPO_CONTA, "
+				+ "CONTA.ID_CONTA FROM "
+				+ "GRUPO_GASTO LEFT JOIN GRUPO_CONTA ON GRUPO_GASTO.ID_GRUPO_GASTO = "
+				+ "GRUPO_CONTA.ID_GRUPO_GASTO"
+				+ " LEFT JOIN CONTA ON CONTA.ID_CONTA = GRUPO_CONTA.ID_CONTA "
+				+ "WHERE GRUPO_GASTO.ID_USUARIO = ? ORDER BY GRUPO_GASTO.ID_GRUPO_GASTO;";
 		Conectar();
 		PreparedStatement ps;
 
@@ -442,14 +452,26 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ResultSet rs = ps.executeQuery();
 			ArrayList<GrupoGasto> gg = new ArrayList<GrupoGasto>();
 
-			while (rs.next()) {
-				GrupoGasto g;
-				g = rs.getString(3) == "D" ? new GrupoGastoDespesa()
-						: new GrupoGastoReceita();
+			ArrayList<Integer> gruposAdicionados = new ArrayList<Integer>();
 
-				g.setId(rs.getInt(1));
-				g.setNome(rs.getString(2));
-				gg.add(g);
+			GrupoGasto g = null;
+			while (rs.next()) {
+				if (!gruposAdicionados.contains(rs.getInt(1))) {
+					gruposAdicionados.add(rs.getInt(1));
+					g = rs.getString(3).equals("D") ? new GrupoGastoDespesa()
+							: new GrupoGastoReceita();
+					g.setId(rs.getInt(1));
+					g.setNome(rs.getString(2));
+					gg.add(g);
+				}
+				if (rs.getObject(5) != null) {
+					Conta c = rs.getString(4).equals("A") ? new ContaAtivos()
+							: rs.getString(4).equals("P") ? new ContaPassivos()
+									: rs.getString(4).equals("R") ? new ContaRendimentos()
+											: new ContaDespesas();
+					g.getContas().add(c);
+					c.setId(rs.getInt(5));
+				}
 			}
 
 			Fechar();
@@ -494,7 +516,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 * @param usr
 	 * @param x
 	 * @throws SQLException
-	 * busca os lancamentos de uma conta
+	 *             busca os lancamentos de uma conta
 	 */
 	private void preencherLancamentos(Usuario usr, Conta x) throws SQLException {
 		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR FROM LANCAMENTO WHERE ID_USUARIO = ? AND ID_CONTA = ?;";
@@ -537,7 +559,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.Lancamento)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario,
+	 *      br.unb.cic.poo.controlefinancas.dominio.Lancamento)
 	 */
 	@Override
 	public void excluirLancamento(Usuario usr, Lancamento l) {

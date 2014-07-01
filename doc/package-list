@@ -1,0 +1,6 @@
+br.unb.cic.poo.controlefinancas.dominio
+br.unb.cic.poo.controlefinancas.fabrica
+br.unb.cic.poo.controlefinancas.negocio
+br.unb.cic.poo.controlefinancas.persistencia
+br.unb.cic.poo.controlefinancas.web
+spark.template.freemarker

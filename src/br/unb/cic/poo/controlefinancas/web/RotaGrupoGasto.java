@@ -11,16 +11,25 @@ import br.unb.cic.poo.controlefinancas.negocio.NegocioContas;
 import br.unb.cic.poo.controlefinancas.negocio.NegocioGrupoGasto;
 
 /**
- * @author CaioYuri
- * modulo de grupo de gasto
+ * @author CaioYuri modulo de grupo de gasto
  */
 public class RotaGrupoGasto extends Rota {
+	private void preencherViewModelBase(ViewModelBase vwb) {
+		vwb.setCategoriaAtual("GrupoGasto");
+		vwb.setListaPaginas(new ArrayList<String>());
+		vwb.getListaPaginas().add("Listar");
+		vwb.getListaPaginas().add("Criar");
+	}
+	@Override
+	protected String getRotaPadrao() {
+		
+		return "/listar";
+	}
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.web.Rota#DefinirSubRotas(java.lang.String)
+	 * @see br.unb.cic.poo.controlefinancas.web.Rota#definirSubRotasProtected(java.lang.String)
 	 */
 	@Override
-	public void DefinirSubRotas(String nomeRota)
-	{
+	protected void definirSubRotasProtected(String nomeRota) {
 		Spark.get(new FreeMarkerRoute(nomeRota + "/listar") {
 			@Override
 			public Object tempHandle(Request request, Response response) {
@@ -28,17 +37,28 @@ public class RotaGrupoGasto extends Rota {
 
 				NegocioGrupoGasto g = getFabrica().criarNegocioGrupoGasto();
 
-				ListaGrupoGastoViewModel mod = new ListaGrupoGastoViewModel();
-				mod.setGruposGasto(g.listarGruposGasto(usr));
+				ListaGrupoGastoViewModel vwb = new ListaGrupoGastoViewModel();
+				vwb.setGruposGasto(g.listarGruposGasto(usr));
 
-				return modelAndView(mod, "grupolistar.ftl");
+				vwb.setInfo("Veja todos os seus grupos de gasto.");
+				vwb.setTitulo("Lista dos grupos de gasto");
+				vwb.setDescricaoView("Seus grupos de gasto");
+				preencherViewModelBase(vwb);
+
+				return modelAndView(vwb, "grupolistar.ftl");
 			}
 		});
 
 		Spark.get(new FreeMarkerRoute(nomeRota + "/criar") {
 			@Override
 			public Object tempHandle(Request request, Response response) {
-				return modelAndView(null, "grupocriar.ftl");
+				ViewModelBase vwb = new ViewModelBase();
+				vwb.setInfo("Digite os dados do novo grupo de gasto.");
+				vwb.setTitulo("Criar um grupos de gasto");
+				vwb.setDescricaoView("crie um novo grupo de gasto");
+				preencherViewModelBase(vwb);
+
+				return modelAndView(vwb, "grupocriar.ftl");
 			}
 		});
 
@@ -64,14 +84,18 @@ public class RotaGrupoGasto extends Rota {
 
 				NegocioGrupoGasto g = getFabrica().criarNegocioGrupoGasto();
 
-				GrupoViewModel gv = new GrupoViewModel();
+				GrupoViewModel vwb = new GrupoViewModel();
 
 				for (GrupoGasto gg : g.listarGruposGasto(usr)) {
 					if (gg.getId() == Integer.parseInt(request.params(":id")))
-						gv.setGrp(gg);
+						vwb.setGrp(gg);
 				}
 
-				return modelAndView(gv, "grupocriar.ftl");
+				vwb.setInfo("Digite os novos dados do grupo de gasto.");
+				vwb.setTitulo("Alterar um grupos de gasto");
+				vwb.setDescricaoView("edite um grupo de gasto existente");
+				preencherViewModelBase(vwb);
+				return modelAndView(vwb, "grupocriar.ftl");
 			}
 		});
 
@@ -118,9 +142,13 @@ public class RotaGrupoGasto extends Rota {
 				grp.setContas(contas);
 				grp.setId(Integer.parseInt(request.params(":id")));
 				g.alterarGrupoGasto(usr, grp);
-
-				return modelAndView(new GrupoViewModel(
-						"Grupo editado com sucesso"), "grupocriar.ftl");
+				ViewModelBase vwb = new GrupoViewModel(
+						"Grupo editado com sucesso");
+				vwb.setInfo("Digite os novos dados do grupo de gasto.");
+				vwb.setTitulo("Alterar um grupos de gasto");
+				vwb.setDescricaoView("edite um grupo de gasto existente");
+				preencherViewModelBase(vwb);
+				return modelAndView(vwb, "grupocriar.ftl");
 			}
 		});
 
@@ -167,9 +195,13 @@ public class RotaGrupoGasto extends Rota {
 				grp.setContas(contas);
 
 				g.criarGrupoGasto(usr, grp);
-
-				return modelAndView(new GrupoViewModel(
-						"Grupo criado com sucesso"), "grupocriar.ftl");
+				ViewModelBase vwb = new GrupoViewModel(
+						"Grupo criado com sucesso");
+				vwb.setInfo("Digite os dados do novo grupo de gasto.");
+				vwb.setTitulo("Criar um grupos de gasto");
+				vwb.setDescricaoView("crie um novo grupo de gasto");
+				preencherViewModelBase(vwb);
+				return modelAndView(vwb, "grupocriar.ftl");
 			}
 		});
 	}

@@ -1,5 +1,9 @@
 package br.unb.cic.poo.controlefinancas.web;
 
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Spark;
 import br.unb.cic.poo.controlefinancas.fabrica.*;
 
 /**
@@ -17,10 +21,26 @@ public abstract class Rota {
 		return FabricaSQLite.getInstance();
 	}
 	
+	public void definirSubRotas(final String nomeRota)
+	{
+		Spark.get(new Route(nomeRota) {
+			@Override
+			public Object handle(Request rq, Response rp) {
+				rp.redirect(nomeRota + getRotaPadrao());
+				halt();
+				return null;
+			}
+		});
+		
+		definirSubRotasProtected(nomeRota);
+	}
+	
+	protected abstract String getRotaPadrao();
+
 	/**
 	 * @param nomeRota prefixo na url exemplo /usuario, /contas, /lancamentos.
 	 * classes filhas usam esse metodo para inicializar rotas, 
 	 * isto é, metodos que serao vinculados a determinada URL
 	 */
-	public abstract void DefinirSubRotas(String nomeRota);
+	protected abstract void definirSubRotasProtected(String nomeRota);
 }

@@ -6,7 +6,7 @@ import br.unb.cic.poo.controlefinancas.dominio.Usuario;
  * @author CaioYuri
  * usado para enviar/receber dados da view de usuario
  */
-public class UsuarioViewModel {
+public class UsuarioViewModel extends ViewModelBase {
 
 	/**
 	 * constroi um novo view model usuario

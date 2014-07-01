@@ -6,7 +6,7 @@ import br.unb.cic.poo.controlefinancas.dominio.GrupoGasto;
  * @author CaioYuri
  * usado para enviar/receber dados da view de grupos de gasto
  */
-public class GrupoViewModel {
+public class GrupoViewModel extends ViewModelBase {
 		GrupoGasto grp;
 		
 		

@@ -14,9 +14,10 @@ public class DefinicoesRotas {
 	public static void CarregarDefinicoes()
 	{
 		Spark.staticFileRoute("/spark/staticcontent");
-		new RotaUsuario().DefinirSubRotas("/usuario");
-		new RotaConta().DefinirSubRotas("/contas");
-		new RotaGrupoGasto().DefinirSubRotas("/grupogasto");
-		new RotaLancamento().DefinirSubRotas("/lancamento");				
+		new RotaUsuario().definirSubRotas("/usuario");
+		new RotaConta().definirSubRotas("/contas");
+		new RotaGrupoGasto().definirSubRotas("/grupogasto");
+		new RotaLancamento().definirSubRotas("/lancamento");		
+		new RotaRelatorio().definirSubRotas("/relatorios");
 	}
 }

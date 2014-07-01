@@ -25,7 +25,7 @@ public abstract class Conta {
 	/**
 	 * Retorna um multiplicador que sera aplicado aos valores
 	 * 
-	 * @author CaioYuri
+	 * 
 	 * @return multiplicador aplicado aos valores.
 	 */
 	public abstract int getMultiplicador();
