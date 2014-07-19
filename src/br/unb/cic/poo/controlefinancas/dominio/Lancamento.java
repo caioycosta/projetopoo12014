@@ -1,5 +1,7 @@
 package br.unb.cic.poo.controlefinancas.dominio;
 
+import java.util.Date;
+
 /**
  * @author CaioYuri
  * representa um lancamento
@@ -10,6 +12,23 @@ public class Lancamento {
 	private Conta conta;
 	private GrupoGasto grupo;
 	int id;
+	private Date data;
+
+	/**
+	 * esta é a data de efetivação
+	 * do lançamento, não a data de sua criação.
+	 * @return a data do lançamento
+	 */
+	public Date getData() {
+		return data;
+	}
+
+	/**
+	 * @param data a data para setar
+	 */
+	public void setData(Date data) {
+		this.data = data;
+	}
 
 	/**
 	 * @return o id

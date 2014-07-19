@@ -72,7 +72,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	public void alterarLancamento(Lancamento l, Usuario usr) {
 		String q = "UPDATE LANCAMENTO "
 				+ "SET VALOR = ?, DESCRICAO = ?, ID_CONTA = ?, "
-				+ "ID_GRUPO_GASTO = ? WHERE ID_USUARIO = ? "
+				+ "ID_GRUPO_GASTO = ?, DATA = ? WHERE ID_USUARIO = ? "
 				+ "AND ID_LANCAMENTO = ?;";
 		Conectar();
 		try {
@@ -80,12 +80,18 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setInt(1, l.getValor());
 			ps.setString(2, l.getDescricao());
 			ps.setInt(3, l.getConta().getId());
+			
 			if (l.getGrupo() == null)
 				ps.setNull(4, java.sql.Types.INTEGER);
 			else
 				ps.setInt(4, l.getGrupo().getId());
-			ps.setInt(5, usr.getId());
-			ps.setInt(6, l.getId());
+			
+			// Monta objeto java.sql.Date a partir de java.util.Date
+		    ps.setDate(5, new java.sql.Date(l.getData().getTime()));
+			
+		    ps.setInt(6, usr.getId());
+			ps.setInt(7, l.getId());
+			
 			ps.executeUpdate();
 
 			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
@@ -109,7 +115,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	@Override
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
 		String slc = "SELECT ID_LANCAMENTO, VALOR, DESCRICAO, ID_TIPO_CONTA, "
-				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.SALDO, CONTA.ID_CONTA FROM "
+				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.SALDO, CONTA.ID_CONTA, " +
+				"DATA FROM "
 				+ "LANCAMENTO INNER JOIN CONTA ON LANCAMENTO.ID_CONTA = CONTA.ID_CONTA "
 				+ "INNER JOIN GRUPO_GASTO ON LANCAMENTO.ID_GRUPO_GASTO = GRUPO_GASTO.ID_GRUPO_GASTO "
 				+ "WHERE LANCAMENTO.ID_USUARIO = ? AND ID_LANCAMENTO = ?;";
@@ -141,6 +148,11 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 					break;
 				}
 				l.setConta(x);
+				
+				// converte objeto java.sql.Date para java.util.Date
+				// e preenche o lançamento com a informação
+				l.setData(new java.util.Date(rs.getDate("DATA").getTime()));
+				
 				x.setSaldo(rs.getInt(7));
 				x.setId(rs.getInt(8));
 
@@ -297,13 +309,17 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	@Override
 	public void criarLancamento(Lancamento l, Usuario usr) {
 		Conectar();
-		String s = "INSERT INTO LANCAMENTO (DESCRICAO, VALOR, ID_CONTA, ID_GRUPO_GASTO, ID_USUARIO) VALUES (?,?,?,?,?);";
+		String s = "INSERT INTO LANCAMENTO (DESCRICAO, VALOR, ID_CONTA, ID_GRUPO_GASTO, ID_USUARIO, DATA) VALUES (?,?,?,?,?,?);";
 		try {
 			PreparedStatement ps = con.prepareStatement(s);
 			ps.setString(1, l.getDescricao());
 			ps.setInt(2, l.getValor());
 			ps.setInt(3, l.getConta().getId());
 			ps.setInt(5,usr.getId());
+			
+			// Monta objeto java.sql.Date a partir de java.util.Date
+			ps.setDate(6, new java.sql.Date(l.getData().getTime()));
+			
 			if (l.getGrupo() == null)
 				ps.setNull(4, java.sql.Types.INTEGER);
 			else
@@ -519,7 +535,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 *             busca os lancamentos de uma conta
 	 */
 	private void preencherLancamentos(Usuario usr, Conta x) throws SQLException {
-		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR FROM LANCAMENTO WHERE ID_USUARIO = ? AND ID_CONTA = ?;";
+		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE ID_USUARIO = ? AND ID_CONTA = ? ORDER BY DATA;";
 		PreparedStatement ps1 = con.prepareStatement(buscaLancto);
 		ps1.setInt(1, usr.getId());
 		ps1.setInt(2, x.getId());
@@ -531,6 +547,11 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			l.setDescricao(rs1.getString(2));
 			l.setValor(rs1.getInt(3));
 			l.setConta(x);
+			
+			// converte objeto java.sql.Date para java.util.Date
+			// e preenche o lançamento com a informação
+			l.setData(new java.util.Date(rs1.getDate("DATA").getTime()));
+						
 			x.getLancamentos().add(l);
 		}
 	}

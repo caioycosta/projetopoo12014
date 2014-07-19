@@ -1,6 +1,7 @@
 package br.unb.cic.poo.controlefinancas.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
 import br.unb.cic.poo.controlefinancas.negocio.*;
@@ -57,7 +58,6 @@ public class RotaLancamento extends Rota {
 				vwb.setContas(l.getGrupo().getContas());
 				vwb.setIdGrupo(l.getGrupo().getId());
 				vwb.setLancamento(l);
-
 				vwb.setInfo("Digite os novos dados do lançamento.");
 				vwb.setTitulo("Edição de lançamento");
 				vwb.setDescricaoView("Alterar um lançamento existente");
@@ -68,6 +68,7 @@ public class RotaLancamento extends Rota {
 		});
 
 		Spark.post(new FreeMarkerRoute(nomeRota + "/editar/:id") {
+			@SuppressWarnings("deprecation")
 			@Override
 			public Object tempHandle(Request request, Response response) {
 				int idGrupoGasto = Integer.parseInt(request
@@ -112,7 +113,11 @@ public class RotaLancamento extends Rota {
 					l.setGrupo(gruposelecionado);
 					l.setValor(Integer.parseInt(request.queryParams("valor")));
 					l.setId(Integer.parseInt(request.params(":id")));
-
+					
+					l.setData(new Date(Integer.parseInt(request.queryParams("ano")) - 1900,
+							Integer.parseInt(request.queryParams("mes")) - 1, 
+							Integer.parseInt(request.queryParams("dia"))));
+					
 					NegocioLancamentos nl = getFabrica()
 							.criarNegocioLancamentos();
 
@@ -152,6 +157,7 @@ public class RotaLancamento extends Rota {
 		});
 
 		Spark.post(new FreeMarkerRoute(nomeRota + "/criar") {
+			@SuppressWarnings("deprecation")
 			@Override
 			public Object tempHandle(Request request, Response response) {
 				int idGrupoGasto = Integer.parseInt(request
@@ -195,7 +201,12 @@ public class RotaLancamento extends Rota {
 					l.setDescricao(request.queryParams("descricao"));
 					l.setGrupo(gruposelecionado);
 					l.setValor(Integer.parseInt(request.queryParams("valor")));
-
+					
+					int ano = Integer.parseInt(request.queryParams("ano")) - 1900;
+					int mes = Integer.parseInt(request.queryParams("mes")) - 1;
+					int dia = Integer.parseInt(request.queryParams("dia"));
+					l.setData(new Date(ano, mes , dia));
+					
 					NegocioLancamentos nl = getFabrica()
 							.criarNegocioLancamentos();
 					nl.criarLancamento(l, usr);

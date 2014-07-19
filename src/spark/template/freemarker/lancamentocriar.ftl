@@ -17,7 +17,10 @@ Grupo de gasto <select name="grupo">
 </#list>
 </select>
 
-
+Data 
+<input type="text" name="dia" <#if (lancamento)??>value="${lancamento.data?date?string("dd")}"</#if> />
+<input type="text" name="mes" <#if (lancamento)??>value="${lancamento.data?date?string("MM")}"</#if> />
+<input type="text" name="ano" <#if (lancamento)??>value="${lancamento.data?date?string("yyyy")}"</#if> /><br/>
 Descricao <input type="text" name="descricao" value="<#if (lancamento.descricao)??>${lancamento.descricao}</#if>" />
 Valor <input type="text" name="valor" value="<#if (lancamento.valor)??>${lancamento.valor}</#if>" />
 
