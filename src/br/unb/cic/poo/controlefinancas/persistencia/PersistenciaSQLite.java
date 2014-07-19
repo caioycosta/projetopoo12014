@@ -14,8 +14,10 @@ import br.unb.cic.poo.controlefinancas.dominio.GrupoGastoReceita;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos;
+import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaPeriodo;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Lancamento;
+import br.unb.cic.poo.controlefinancas.dominio.Periodo;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 import java.sql.*;
 
@@ -26,7 +28,7 @@ import org.sqlite.SQLiteConfig;
  *         SQLite.
  */
 public class PersistenciaSQLite implements IPersistenciaConta,
-		IPersistenciaGrupoGasto, IPersistenciaLancamentos, IPersistenciaUsuario {
+		IPersistenciaGrupoGasto, IPersistenciaLancamentos, IPersistenciaUsuario, IPersistenciaPeriodo {
 
 	private Connection con = null;
 
@@ -607,6 +609,120 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			RollbackEFechar();
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public Collection<Periodo> buscarPeriodos(Usuario usr) {
+		ArrayList<Periodo> p = new ArrayList<Periodo>();
+		Conectar();
+		try {
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM " +
+					"FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ? ORDER BY DATA_INICIO" +
+					";";
+			PreparedStatement ins = con.prepareStatement(stmt);			
+			ins.setInt(1, usr.getId());
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				Periodo m = new Periodo();
+				m.setIdPeriodo(rst.getInt(1));
+				m.setDataFim(new Date(rst.getDate(3).getTime()));
+				m.setDataInicio(new Date(rst.getDate(2).getTime()));
+				p.add(m);
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
+	}
+
+	@Override
+	public void CadastrarPeriodo(Usuario usr,Periodo p) {
+		Conectar();
+		String s = "INSERT INTO PERIODOS_CONTABILIZACAO (DATA_INICIO, DATA_FIM, ID_USUARIO) VALUES (?,?,?);";
+		try {
+			PreparedStatement ps = con.prepareStatement(s);
+			ps.setDate(1, new java.sql.Date( p.getDataInicio().getTime() ));
+			ps.setDate(2, new java.sql.Date( p.getDataFim().getTime() ));
+			ps.setInt(3, usr.getId());
+			
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void EditarPeriodo(Usuario usr,Periodo p) {
+		Conectar();
+		String s = "UPDATE PERIODOS_CONTABILIZACAO SET " +
+				"DATA_INICIO = ?, DATA_FIM = ?, " +
+				"ID_USUARIO = ? WHERE ID_PERIODO = ?;";
+		try {
+			PreparedStatement ps = con.prepareStatement(s);
+			ps.setDate(1, new java.sql.Date( p.getDataInicio().getTime() ));
+			ps.setDate(2, new java.sql.Date( p.getDataFim().getTime() ));
+			ps.setInt(3, usr.getId());
+			ps.setInt(4, p.getIdPeriodo());
+			
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void ExcluirPeriodo(Usuario usr,Periodo p) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("DELETE FROM PERIODOS_CONTABILIZACAO "
+							+ "WHERE ID_USUARIO = ? AND "
+							+ "ID_PERIODO = ?;");
+			ps.setInt(1, usr.getId());
+			ps.setInt(2, p.getIdPeriodo());
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public Periodo BuscarPeriodo(Usuario usr,int id) {
+		Periodo p = null;
+		Conectar();
+		try {
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM " +
+					"FROM PERIODOS_CONTABILIZACAO WHERE ID_PERIODO = ? AND ID_USUARIO = ?" +
+					";";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, id);
+			ins.setInt(2, usr.getId());
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				p = new Periodo();
+				p.setIdPeriodo(id);
+				p.setDataFim(new Date(rst.getDate(3).getTime()));
+				p.setDataInicio(new Date(rst.getDate(2).getTime()));
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
 	}
 
 }

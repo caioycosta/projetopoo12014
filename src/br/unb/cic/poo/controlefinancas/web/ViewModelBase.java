@@ -22,6 +22,7 @@ public class ViewModelBase {
 		ListaCategorias.add("GrupoGasto");
 		ListaCategorias.add("Lancamento");
 		ListaCategorias.add("Relatorios");
+		ListaCategorias.add("Periodo");
 	}
 	
 	/**

@@ -14,7 +14,7 @@ import spark.template.freemarker.FreeMarkerRoute;
  */
 public class RotaConta extends Rota {
 	private void preencherViewModelBase(ViewModelBase vwb) {
-		vwb.setCategoriaAtual("Conta");
+		vwb.setCategoriaAtual("Contas");
 		vwb.setListaPaginas(new ArrayList<String>());
 		vwb.getListaPaginas().add("Listar");
 	}
@@ -37,9 +37,9 @@ public class RotaConta extends Rota {
 				ConjuntoContas c = n.listarContas((Usuario) (request.session()
 						.attribute("usuario")));
 				ViewModelBase vwb = new ContaViewModel(c);
-				vwb.setInfo("Veja todos os seus grupos de gasto.");
-				vwb.setTitulo("Lista dos grupos de gasto");
-				vwb.setDescricaoView("Seus grupos de gasto");
+				vwb.setInfo("Veja todas as suas contas.");
+				vwb.setTitulo("Lista das contas");
+				vwb.setDescricaoView("Suas contas");
 				preencherViewModelBase(vwb);
 				return modelAndView(vwb, "contaslistar.ftl");
 			}

@@ -3,6 +3,7 @@ package br.unb.cic.poo.controlefinancas.fabrica;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos;
+import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaPeriodo;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.persistencia.PersistenciaSQLite;
 
@@ -62,6 +63,11 @@ public class FabricaSQLite extends Fabrica {
 	 */
 	@Override
 	protected IPersistenciaUsuario criarPersistenciaUsuario() {
+		return new PersistenciaSQLite();
+	}
+
+	@Override
+	protected IPersistenciaPeriodo criarPersistenciaPeriodo() {
 		return new PersistenciaSQLite();
 	}
 

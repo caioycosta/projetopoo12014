@@ -68,4 +68,13 @@ public abstract class Fabrica {
 	 */
 	protected abstract IPersistenciaUsuario criarPersistenciaUsuario();
 
+
+	protected abstract IPersistenciaPeriodo criarPersistenciaPeriodo();
+
+	
+	public NegocioPeriodos criarNegocioPeriodo()
+	{
+		return new NegocioPeriodos(criarPersistenciaPeriodo());
+	}
+
 }

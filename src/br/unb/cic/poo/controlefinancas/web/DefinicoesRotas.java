@@ -1,5 +1,8 @@
 package br.unb.cic.poo.controlefinancas.web;
 
+import spark.Request;
+import spark.Response;
+import spark.Route;
 import spark.Spark;
 
 /**
@@ -19,5 +22,17 @@ public class DefinicoesRotas {
 		new RotaGrupoGasto().definirSubRotas("/grupogasto");
 		new RotaLancamento().definirSubRotas("/lancamento");		
 		new RotaRelatorio().definirSubRotas("/relatorios");
+		new RotaPeriodo().definirSubRotas("/periodo");
+		
+		// rota padrão
+		Spark.get(new Route("/") {
+			
+			@Override
+			public Object handle(Request arg0, Response arg1) {
+				arg1.redirect("/contas");
+				halt();
+				return null;
+			}
+		});
 	}
 }
