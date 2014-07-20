@@ -92,16 +92,16 @@ public class RotaLancamento extends Rota {
 				Conta contaselecionada;
 				if (request.queryParams().contains("conta")) {
 					if (request.queryParams("conta").equals("Ativos")) {
-						contaselecionada = c.listarContas(usr).getContaAtivos();
+						contaselecionada = c.listarContas(usr, null).getContaAtivos();
 					} else if (request.queryParams("conta").equals("Passivos")) {
-						contaselecionada = c.listarContas(usr)
+						contaselecionada = c.listarContas(usr, null)
 								.getContaPassivos();
 					} else if (request.queryParams("conta").equals("Despesas")) {
-						contaselecionada = c.listarContas(usr)
+						contaselecionada = c.listarContas(usr, null)
 								.getContaDespesas();
 					} else if (request.queryParams("conta").equals(
 							"Rendimentos")) {
-						contaselecionada = c.listarContas(usr)
+						contaselecionada = c.listarContas(usr, null)
 								.getContaRendimentos();
 					} else {
 						throw new RuntimeException("deu pobrema");
@@ -181,16 +181,16 @@ public class RotaLancamento extends Rota {
 				Conta contaselecionada;
 				if (request.queryParams().contains("conta")) {
 					if (request.queryParams("conta").equals("Ativos")) {
-						contaselecionada = c.listarContas(usr).getContaAtivos();
+						contaselecionada = c.listarContas(usr, null).getContaAtivos();
 					} else if (request.queryParams("conta").equals("Passivos")) {
-						contaselecionada = c.listarContas(usr)
+						contaselecionada = c.listarContas(usr, null)
 								.getContaPassivos();
 					} else if (request.queryParams("conta").equals("Despesas")) {
-						contaselecionada = c.listarContas(usr)
+						contaselecionada = c.listarContas(usr, null)
 								.getContaDespesas();
 					} else if (request.queryParams("conta").equals(
 							"Rendimentos")) {
-						contaselecionada = c.listarContas(usr)
+						contaselecionada = c.listarContas(usr, null)
 								.getContaRendimentos();
 					} else {
 						throw new RuntimeException("deu pobrema");

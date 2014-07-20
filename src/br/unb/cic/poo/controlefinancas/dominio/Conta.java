@@ -10,7 +10,7 @@ import java.util.*;
  * representa uma conta, de qualquer tipo
  */
 public abstract class Conta {
-	private int saldo;
+	private int total;
 	private int id;
 	private Collection<Lancamento> lancamentos;
 
@@ -36,17 +36,17 @@ public abstract class Conta {
 	public abstract String getNome();
 
 	/**
-	 * @return o saldo
+	 * @return o total o período
 	 */
-	public int getSaldo() {
-		return saldo;
+	public int getTotal() {
+		return total;
 	}
 
 	/**
-	 * @param saldo o saldo para setar
+	 * @param saldo o total para setar
 	 */
-	public void setSaldo(int saldo) {
-		this.saldo = saldo;
+	public void setTotal(int t) {
+		this.total = t;
 	}
 
 	/**
@@ -75,21 +75,5 @@ public abstract class Conta {
 	 */
 	public void setLancamentos(Collection<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
-	}
-
-	/**
-	 * executa o calculo do saldo levando em conta o multiplicador
-	 * @param valor
-	 */
-	public void creditar(int valor) {
-		setSaldo(getSaldo() + valor * getMultiplicador());
-	}
-
-	/**
-	 * executa o calculo do saldo levando em conta o multiplicador
-	 * @param valor
-	 */
-	public void debitar(int valor) {
-		setSaldo(getSaldo() - valor * getMultiplicador());
-	}
+	}	
 }

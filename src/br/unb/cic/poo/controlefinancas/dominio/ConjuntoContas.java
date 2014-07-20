@@ -15,6 +15,12 @@ public class ConjuntoContas {
 	private ContaDespesas contaDespesas;
 	private ContaRendimentos contaRendimentos;
 	private ContaPassivos contaPassivos;
+	
+	/**
+	 * saldo das contas de despesa x receita.
+	 */
+	private int saldo;
+	
 	/**
 	 * @return a conta de Ativos
 	 */
@@ -62,5 +68,17 @@ public class ConjuntoContas {
 	 */
 	public void setContaPassivos(ContaPassivos contaPassivos) {
 		this.contaPassivos = contaPassivos;
+	}
+	/**
+	 * @return the saldo
+	 */
+	public int getSaldo() {
+		return saldo;
+	}
+	/**
+	 * @param saldo the saldo to set
+	 */
+	public void setSaldo(int saldo) {
+		this.saldo = saldo;
 	}
 }

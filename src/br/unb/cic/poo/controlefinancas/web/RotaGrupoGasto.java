@@ -107,7 +107,7 @@ public class RotaGrupoGasto extends Rota {
 
 				Usuario usr = (Usuario) (request.session().attribute("usuario"));
 
-				ConjuntoContas cj = n.listarContas(usr);
+				ConjuntoContas cj = n.listarContas(usr, null);
 
 				GrupoGasto grp;
 				if (request.queryParams("tipo").equals("Despesa")) {
@@ -160,7 +160,7 @@ public class RotaGrupoGasto extends Rota {
 
 				Usuario usr = (Usuario) (request.session().attribute("usuario"));
 
-				ConjuntoContas cj = n.listarContas(usr);
+				ConjuntoContas cj = n.listarContas(usr, null);
 
 				GrupoGasto grp;
 				if (request.queryParams("tipo").equals("Despesa")) {

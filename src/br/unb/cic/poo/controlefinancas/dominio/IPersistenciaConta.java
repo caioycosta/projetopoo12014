@@ -6,9 +6,10 @@ package br.unb.cic.poo.controlefinancas.dominio;
  */
 public interface IPersistenciaConta {
 	/**
-	 * @param usr
+	 * @param usr usuário atual
+	 * @param p período, controla quais os lançamentos a obter.
 	 * @return o conjunto de contas do usuario
 	 * traz todas as contas do usuario
 	 */
-	public ConjuntoContas listarContas(Usuario usr);
+	public ConjuntoContas listarContas(Usuario usr, Periodo p);
 }

@@ -96,13 +96,6 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			
 			ps.executeUpdate();
 
-			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
-					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
-			ps.setInt(1, l.getConta().getSaldo());
-			ps.setInt(2, l.getConta().getId());
-			ps.setInt(3, usr.getId());
-			ps.executeUpdate();
-
 			CommitEFechar();
 		} catch (SQLException e) {
 			RollbackEFechar();
@@ -117,7 +110,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	@Override
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
 		String slc = "SELECT ID_LANCAMENTO, VALOR, DESCRICAO, ID_TIPO_CONTA, "
-				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.SALDO, CONTA.ID_CONTA, " +
+				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.ID_CONTA AS ID_CONTA, " +
 				"DATA FROM "
 				+ "LANCAMENTO INNER JOIN CONTA ON LANCAMENTO.ID_CONTA = CONTA.ID_CONTA "
 				+ "INNER JOIN GRUPO_GASTO ON LANCAMENTO.ID_GRUPO_GASTO = GRUPO_GASTO.ID_GRUPO_GASTO "
@@ -155,8 +148,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 				// e preenche o lançamento com a informação
 				l.setData(new java.util.Date(rs.getDate("DATA").getTime()));
 				
-				x.setSaldo(rs.getInt(7));
-				x.setId(rs.getInt(8));
+				x.setId(rs.getInt("ID_CONTA"));
 
 				if (rs.getObject(6) != null) {
 					GrupoGasto g = rs.getString(6).equals("D") ? new GrupoGastoDespesa()
@@ -240,33 +232,33 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 *            usuario que foi criado
 	 */
 	private void CriarContasNovoUsuario(Usuario usr) throws SQLException {
-		String q = "INSERT INTO CONTA (ID_TIPO_CONTA, ID_USUARIO, NOME, SALDO) VALUES (?,?,?,?);";
+		String q = "INSERT INTO CONTA (ID_TIPO_CONTA, ID_USUARIO, NOME) VALUES (?,?,?);";
 		PreparedStatement p = con.prepareStatement(q);
 		p.setString(1, "A");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Ativos");
-		p.setInt(4, 0);
+		
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "P");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Passivos");
-		p.setInt(4,0);
+
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "R");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Rendimentos");
-		p.setInt(4, 0);
+		
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "D");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Despesas");
-		p.setInt(4, 0);
+		
 		p.executeUpdate();
 	}
 
@@ -327,12 +319,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			else
 				ps.setInt(4, l.getGrupo().getId());
 			ps.executeUpdate();
-			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
-					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
-			ps.setInt(1, l.getConta().getSaldo());
-			ps.setInt(2, l.getConta().getId());
-			ps.setInt(3, usr.getId());
-			ps.executeUpdate();
+
 
 			CommitEFechar();
 		} catch (SQLException e) {
@@ -388,13 +375,13 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
-	public ConjuntoContas listarContas(Usuario usr) {
+	public ConjuntoContas listarContas(Usuario usr, Periodo p) {
 		Conectar();
 		try {
 			ConjuntoContas cj = new ConjuntoContas();
 
 			PreparedStatement ps = con
-					.prepareStatement("SELECT ID_TIPO_CONTA, SALDO, ID_CONTA FROM CONTA WHERE ID_USUARIO = ?;");
+					.prepareStatement("SELECT ID_TIPO_CONTA, ID_CONTA FROM CONTA WHERE ID_USUARIO = ?;");
 			ps.setInt(1, usr.getId());
 			ResultSet rs = ps.executeQuery();
 
@@ -403,26 +390,26 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 				case "A":
 					ContaAtivos ca = new ContaAtivos();
 					cj.setContaAtivos(ca);
-					ca.setId(rs.getInt(3));
-					ca.setSaldo(rs.getInt(2));
+					ca.setId(rs.getInt("ID_CONTA"));
+					
 					break;
 				case "P":
 					ContaPassivos cp = new ContaPassivos();
 					cj.setContaPassivos(cp);
-					cp.setId(rs.getInt(3));
-					cp.setSaldo(rs.getInt(2));
+					cp.setId(rs.getInt("ID_CONTA"));
+					
 					break;
 				case "D":
 					ContaDespesas cd = new ContaDespesas();
 					cj.setContaDespesas(cd);
-					cd.setId(rs.getInt(3));
-					cd.setSaldo(rs.getInt(2));
+					cd.setId(rs.getInt("ID_CONTA"));
+				
 					break;
 				case "R":
 					ContaRendimentos cr = new ContaRendimentos();
 					cj.setContaRendimentos(cr);
-					cr.setId(rs.getInt(3));
-					cr.setSaldo(rs.getInt(2));
+					cr.setId(rs.getInt("ID_CONTA"));
+					
 					break;
 				}
 			}
@@ -597,12 +584,6 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setInt(2, l.getId());
 			ps.executeUpdate();
 
-			ps = con.prepareStatement("UPDATE CONTA " + "SET SALDO = ? "
-					+ "WHERE ID_CONTA = ? AND ID_USUARIO = ?;");
-			ps.setInt(1, l.getConta().getSaldo());
-			ps.setInt(2, l.getConta().getId());
-			ps.setInt(3, usr.getId());
-			ps.executeUpdate();
 
 			CommitEFechar();
 		} catch (SQLException e) {
@@ -716,6 +697,35 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 				p.setIdPeriodo(id);
 				p.setDataFim(new Date(rst.getDate(3).getTime()));
 				p.setDataInicio(new Date(rst.getDate(2).getTime()));
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
+	}
+
+	@Override
+	public Periodo BuscarPeriodoCorrente(Usuario usr) {
+		java.util.Date d = new java.util.Date();
+		Periodo p = null;
+		Conectar();
+		try {
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM " +
+					"FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ?" +
+					" AND DATA_INICIO <= ? AND DATA_FIM >= ?;";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, usr.getId());
+			ins.setDate(2,new java.sql.Date(d.getTime()));
+			ins.setDate(3,new java.sql.Date(d.getTime()));
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				p = new Periodo();
+				p.setIdPeriodo(rst.getInt("ID_PERIODO"));
+				p.setDataFim(new Date(rst.getDate("DATA_FIM").getTime()));
+				p.setDataInicio(new Date(rst.getDate("DATA_INICIO").getTime()));
 			}
 			Fechar();
 		} catch (SQLException e) {

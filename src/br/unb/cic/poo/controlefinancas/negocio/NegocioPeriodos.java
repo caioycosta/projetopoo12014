@@ -44,4 +44,8 @@ public class NegocioPeriodos {
 	public Periodo BuscarPeriodo(Usuario usr, int id) {
 		return persPer.BuscarPeriodo(usr, id);
 	}
+
+	public Periodo buscarPeriodoCorrente(Usuario usr) {
+		return persPer.BuscarPeriodoCorrente(usr);
+	}
 }

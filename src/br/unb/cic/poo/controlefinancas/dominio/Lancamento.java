@@ -99,29 +99,4 @@ public class Lancamento {
 	public void setGrupo(GrupoGasto grupo) {
 		this.grupo = grupo;
 	}
-
-	/**
-	 * credita o valor deste lancamento na conta
-	 * atribuida a este lancamento
-	 */
-	public void creditar() {
-		getConta().creditar(getValor() * getGrupo().getMultiplicador());
-	}
-
-	/**
-	 * debita o valor deste lancamento na conta
-	 * atribuida a este lancamento
-	 */
-	public void debitar() {
-		debitar(getValor());
-	}
-	
-	/**
-	 * @param valor valor a debitar
-	 *  debita o valor fornecido na conta
-	 * atribuida a este lancamento
-	 */
-	public void debitar(int valor) {
-		getConta().debitar(valor * getGrupo().getMultiplicador());
-	}
 }

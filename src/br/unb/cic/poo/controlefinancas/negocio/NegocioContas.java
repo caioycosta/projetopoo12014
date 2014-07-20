@@ -23,8 +23,8 @@ public class NegocioContas {
 	 * @return conjunto de contas do usuario
 	 * lista as contas do usuário.
 	 */
-	public ConjuntoContas listarContas(Usuario usr) {
-		return persistencia.listarContas(usr);
+	public ConjuntoContas listarContas(Usuario usr, Periodo p) {
+		return persistencia.listarContas(usr, p);
 	}
 
 }

@@ -1,6 +1,5 @@
 package br.unb.cic.poo.controlefinancas.negocio;
 
-import br.unb.cic.poo.controlefinancas.dominio.ConjuntoContas;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
 import br.unb.cic.poo.controlefinancas.dominio.RelatorioPatrimonial;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
@@ -14,11 +13,8 @@ public class NegocioRelatorios {
 	
 	public RelatorioPatrimonial gerarRelatorio(Usuario usr)
 	{
-		ConjuntoContas cj = pers.listarContas(usr);
-		
+		// TODO refazer o relatorio patrimonial
 		RelatorioPatrimonial rp = new RelatorioPatrimonial();
-		rp.setSaldoAtivos(cj.getContaAtivos().getSaldo());
-		rp.setSaldoPassivos(cj.getContaPassivos().getSaldo());
 		
 		return rp;
 	}

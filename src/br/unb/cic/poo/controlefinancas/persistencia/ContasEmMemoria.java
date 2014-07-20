@@ -21,7 +21,7 @@ public class ContasEmMemoria implements IPersistenciaConta {
 	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
-	public ConjuntoContas listarContas(Usuario usr) {
+	public ConjuntoContas listarContas(Usuario usr, Periodo p) {
 		// obter a referencia ao usuario da persistencia
 
 		Usuario u = UsuarioEmMemoria.obterObjetoUsuario(usr);

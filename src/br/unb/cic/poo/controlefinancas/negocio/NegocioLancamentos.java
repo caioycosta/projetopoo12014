@@ -26,7 +26,7 @@ public class NegocioLancamentos {
 	 * cria um novo lancamento, atualizando o saldo da conta.
 	 */
 	public void criarLancamento(Lancamento l, Usuario usr) {
-		l.creditar();
+		
 		persLanc.criarLancamento(l, usr);
 	}
 
@@ -54,8 +54,6 @@ public class NegocioLancamentos {
 	 * altera um lancamento, atualizando o saldo da conta
 	 */
 	public void alterarLancamento(Lancamento l, Usuario usr) {
-		l.debitar(buscarLancamento(usr,l.getId()).getValor());
-		l.creditar();		
 		persLanc.alterarLancamento(l,usr);
 	}
 
@@ -67,7 +65,7 @@ public class NegocioLancamentos {
 	public void excluirLancamento(Usuario usr, int parseInt) {
 		Lancamento l = buscarLancamento(usr,parseInt);
 		
-		l.debitar(); 
+		
 		persLanc.excluirLancamento(usr, l);
 	}
 }

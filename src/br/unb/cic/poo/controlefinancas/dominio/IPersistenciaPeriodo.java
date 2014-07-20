@@ -16,4 +16,5 @@ public interface IPersistenciaPeriodo {
 	public void EditarPeriodo(Usuario usr,Periodo p);
 	public void ExcluirPeriodo(Usuario usr,Periodo p);
 	public Periodo BuscarPeriodo(Usuario usr,int id);
+	public Periodo BuscarPeriodoCorrente(Usuario usr);
 }

@@ -30,7 +30,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 
 		ContasEmMemoria c = new ContasEmMemoria();
 
-		ConjuntoContas cj = c.listarContas(u);
+		ConjuntoContas cj = c.listarContas(u, null);
 
 		Lancamento l = null;
 
@@ -76,7 +76,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 
 		ContasEmMemoria c = new ContasEmMemoria();
 
-		ConjuntoContas cj = c.listarContas(u);
+		ConjuntoContas cj = c.listarContas(u, null);
 
 		
 
@@ -97,7 +97,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 	@Override
 	public void excluirLancamento(Usuario u, Lancamento l) {
 		ContasEmMemoria c = new ContasEmMemoria();
-		ConjuntoContas cj = c.listarContas(u);
+		ConjuntoContas cj = c.listarContas(u, null);
 
 		Conta cn = null;
 		Lancamento lc = null;
