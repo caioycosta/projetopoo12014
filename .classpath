@@ -14,7 +14,7 @@
 	<classpathentry kind="lib" path="LIB/servlet-api-3.1.jar"/>
 	<classpathentry kind="lib" path="LIB/jetty-io-9.2.1.v20140609.jar"/>
 	<classpathentry kind="lib" path="LIB/jetty-http-9.2.1.v20140609.jar"/>
-	<classpathentry kind="lib" path="LIB/spark-custom.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/spark"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

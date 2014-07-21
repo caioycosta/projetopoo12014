@@ -14,14 +14,7 @@ public class ContaDespesas extends Conta {
 		
 	}
 
-	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.Conta#getMultiplicador()
-	 */
-	@Override
-	public int getMultiplicador() {		
-		return -1;
-	}
-
+	
 	/**
 	 * @see br.unb.cic.poo.controlefinancas.dominio.Conta#getNome()
 	 */

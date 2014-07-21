@@ -15,33 +15,73 @@
 </form>
 <br/>
 <h2>${contaAtivos.nome}</h2>
-Total do período: ${contaAtivos.total}<br/>
-<#list (contaAtivos.lancamentos) as la>
-${la.data?date?string("dd")}/${la.data?date?string("MM")}/${la.data?date?string("yyyy")} ${la.id} ${la.descricao} ${la.valor} 
-<a href='/lancamento/editar/${la.id}'>A</a> <a href='/lancamento/excluir/${la.id}'>X</a> <br/>
+Total do período: ${(contaAtivos.total/100)?string.currency}<br/>
+Total acumulado até fim do período: ${(contaAtivos.saldoAcumulado/100)?string.currency}<br/>
+<br/>
+<table class="listing">
+<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<#list (contaAtivos.lancamentos) as ld>
+<tr>
+<td>${ld.id}</td>
+<td>${ld.data?date?string("dd/MM/yyyy")}</td>
+<td style="text-align:left;">${ld.descricao}</td>
+<td style="font-family:monospace;text-align:right;">${(ld.valor / 100)?string.currency}</td>
+<td><a href='/lancamento/editar/${ld.id}'>A</a> <a href='/lancamento/excluir/${ld.id}' class="confirmation">X</a></td>
+</tr>
 </#list>
+</table>
 
 <h2>${contaPassivos.nome}</h2>
-Total do período: ${contaPassivos.total}<br/>
-<#list (contaPassivos.lancamentos) as lp>
-${lp.data?date?string("dd")}/${lp.data?date?string("MM")}/${lp.data?date?string("yyyy")} ${lp.id} ${lp.descricao} ${lp.valor}
-<a href='/lancamento/editar/${lp.id}'>A</a> <a href='/lancamento/excluir/${lp.id}'>X</a><br/>
-</#list>
+Total do período: ${(contaPassivos.total/100)?string.currency}<br/>
+Total acumulado até fim do período: ${(contaPassivos.saldoAcumulado/100)?string.currency}<br/>
 <br/>
-<hr/>
-Saldo do período: ${saldo}
+<table class="listing">
+<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<#list (contaPassivos.lancamentos) as ld>
+<tr>
+<td>${ld.id}</td>
+<td>${ld.data?date?string("dd/MM/yyyy")}</td>
+<td style="text-align:left;">${ld.descricao}</td>
+<td style="font-family:monospace;text-align:right;">${(ld.valor / 100)?string.currency}</td>
+<td><a href='/lancamento/editar/${ld.id}'>A</a> <a href='/lancamento/excluir/${ld.id}' class="confirmation">X</a></td>
+</tr>
+</#list>
+</table>
+<br/>
+<hr/><hr/>
+Saldo do período: ${(cj.saldoMes/100)?string.currency} <br/>
+Saldo acumulado, ao fim do período: ${(cj.saldo/100)?string.currency}
 <br/>
 <h2>${contaRendimentos.nome}</h2>
-Total do período: ${contaRendimentos.total}<br/>
-<#list (contaRendimentos.lancamentos) as lr>
-${lr.data?date?string("dd")}/${lr.data?date?string("MM")}/${lr.data?date?string("yyyy")} ${lr.id} ${lr.descricao} ${lr.valor}
-<a href='/lancamento/editar/${lr.id}'>A</a> <a href='/lancamento/excluir/${lr.id}'>X</a><br/>
+Total do período: ${(contaRendimentos.total/100)?string.currency}
+<br/><br/>
+<table class="listing">
+<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<#list (contaRendimentos.lancamentos) as ld>
+<tr>
+<td>${ld.id}</td>
+<td>${ld.data?date?string("dd/MM/yyyy")}</td>
+<td style="text-align:left;">${ld.descricao}</td>
+<td style="font-family:monospace;text-align:right;">${(ld.valor / 100)?string.currency}</td>
+<td><a href='/lancamento/editar/${ld.id}'>A</a> <a href='/lancamento/excluir/${ld.id}' class="confirmation">X</a></td>
+</tr>
 </#list>
+</table>
 
 <h2>${contaDespesas.nome}</h2>
-Total do período: ${contaDespesas.total}<br/>
+Total do período: ${(contaDespesas.total / 100)?string.currency}
+<br/><br/>
+<table class="listing">
+<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
 <#list (contaDespesas.lancamentos) as ld>
-${ld.data?date?string("dd")}/${ld.data?date?string("MM")}/${ld.data?date?string("yyyy")} ${ld.id} ${ld.descricao} ${ld.valor}
-<a href='/lancamento/editar/${ld.id}'>A</a> <a href='/lancamento/excluir/${ld.id}'>X</a><br/>
+<tr>
+<td>${ld.id}</td>
+<td>${ld.data?date?string("dd/MM/yyyy")}</td>
+<td style="text-align:left;">${ld.descricao}</td>
+<td style="font-family:monospace;text-align:right;">${(ld.valor / 100)?string.currency}</td>
+<td><a href='/lancamento/editar/${ld.id}'>A</a> <a href='/lancamento/excluir/${ld.id}' class="confirmation">X</a></td>
+</tr>
 </#list>
+</table>
+
 <#include "footer.ftl">

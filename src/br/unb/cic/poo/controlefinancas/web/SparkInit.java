@@ -7,12 +7,15 @@ public class SparkInit {
 
 	/**
 	 * @param args
-	 * realiza operacaos de inicializacao
+	 *            realiza operacaos de inicializacao
 	 */
 	public static void main(String[] args) {
-		
-		DefinicoesRotas.CarregarDefinicoes();
+		if (args.length >= 1) {
+			DefinicoesRotas.CarregarDefinicoes(args[0]);
+		} else {
+			DefinicoesRotas.CarregarDefinicoes("/spark/staticcontent");
+		}
 		DefinicoesFiltros.CarregarDefinicoes();
-		
+
 	}
 }

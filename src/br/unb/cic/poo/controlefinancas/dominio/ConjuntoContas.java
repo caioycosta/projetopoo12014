@@ -21,6 +21,14 @@ public class ConjuntoContas {
 	 */
 	private int saldo;
 	
+	public int getSaldoMes() {
+		return getContaRendimentos().getTotal() - getContaDespesas().getTotal();
+	}
+	
+	public void setSaldoMes() {
+		// noop	
+	}
+	
 	/**
 	 * @return a conta de Ativos
 	 */

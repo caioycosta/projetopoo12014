@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<#setting number_format="computer">
 <html>
 <head>
     <title>Controle de finanças</title>
@@ -164,4 +165,4 @@
                     </table>
                 </div>
             </div> --> 
-            <div>
+            <div style="padding-bottom:50px;">

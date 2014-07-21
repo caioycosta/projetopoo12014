@@ -13,16 +13,6 @@ public class GrupoGastoDespesa extends GrupoGasto {
 	
 	}
 
-	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getMultiplicador()
-	 */
-	@Override
-	public int getMultiplicador() {
-		
-		
-		return -1;
-		
-	}
 
 	/** 
 	 * @see br.unb.cic.poo.controlefinancas.dominio.GrupoGasto#getTipo()

@@ -22,14 +22,7 @@ public abstract class Conta {
 		lancamentos = new ArrayList<Lancamento>();
 	}
 
-	/**
-	 * Retorna um multiplicador que sera aplicado aos valores
-	 * 
-	 * 
-	 * @return multiplicador aplicado aos valores.
-	 */
-	public abstract int getMultiplicador();
-
+	
 	/**
 	 * @return nome da conta
 	 */

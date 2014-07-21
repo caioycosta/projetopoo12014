@@ -1,5 +1,4 @@
 <#include "header.ftl">
-<h1>Cadastrar novo Lançamento</h1>
 <#if (mensagem)??>${mensagem}<#else>Digite os dados.</#if> </br>
 <form method="post">
 Grupo de gasto <select name="grupo">

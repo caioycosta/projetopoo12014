@@ -13,10 +13,11 @@ public class DefinicoesRotas {
 	/**
 	 * Carrega as definições de rotas para o sistema web.
 	 * usado pra configurar os prefixos das urls
+	 * @param args 
 	 */
-	public static void CarregarDefinicoes()
+	public static void CarregarDefinicoes(String args)
 	{
-		Spark.staticFileRoute("/spark/staticcontent");
+		Spark.staticFileRoute(args);
 		new RotaUsuario().definirSubRotas("/usuario");
 		new RotaConta().definirSubRotas("/contas");
 		new RotaGrupoGasto().definirSubRotas("/grupogasto");

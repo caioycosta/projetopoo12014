@@ -11,6 +11,20 @@ import br.unb.cic.poo.controlefinancas.dominio.Periodo;
 
 public class ContaViewModel extends ViewModelBase {
 	ConjuntoContas cj;
+	/**
+	 * @return the cj
+	 */
+	public ConjuntoContas getCj() {
+		return cj;
+	}
+
+	/**
+	 * @param cj the cj to set
+	 */
+	public void setCj(ConjuntoContas cj) {
+		this.cj = cj;
+	}
+
 	Collection<Periodo> periodos;
 	Periodo periodoSel;
 	/**

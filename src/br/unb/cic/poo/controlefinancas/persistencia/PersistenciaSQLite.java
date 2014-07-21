@@ -28,8 +28,19 @@ import org.sqlite.SQLiteConfig;
  *         SQLite.
  */
 public class PersistenciaSQLite implements IPersistenciaConta,
-		IPersistenciaGrupoGasto, IPersistenciaLancamentos, IPersistenciaUsuario, IPersistenciaPeriodo {
+		IPersistenciaGrupoGasto, IPersistenciaLancamentos,
+		IPersistenciaUsuario, IPersistenciaPeriodo {
 
+	@SuppressWarnings("deprecation")
+	private java.sql.Date soD(java.sql.Date d)
+	{
+		/*d.setHours(0);
+		d.setMinutes(0);
+		d.setSeconds(0);
+		d.setTime(d.getTime() - (d.getTime() % 1000)); */
+		return new java.sql.Date(d.getYear(), d.getMonth(), d.getDate());
+	}
+	
 	private Connection con = null;
 
 	/**
@@ -42,7 +53,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		String d = "DELETE FROM GRUPO_CONTA WHERE ID_GRUPO_GASTO = ?;";
 		Conectar();
 		try {
-			PreparedStatement p = con.prepareStatement(d); p.setInt(1, grp.getId());
+			PreparedStatement p = con.prepareStatement(d);
+			p.setInt(1, grp.getId());
 			p.executeUpdate();
 
 			p = con.prepareStatement(q);
@@ -82,18 +94,18 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setInt(1, l.getValor());
 			ps.setString(2, l.getDescricao());
 			ps.setInt(3, l.getConta().getId());
-			
+
 			if (l.getGrupo() == null)
 				ps.setNull(4, java.sql.Types.INTEGER);
 			else
 				ps.setInt(4, l.getGrupo().getId());
-			
+
 			// Monta objeto java.sql.Date a partir de java.util.Date
-		    ps.setDate(5, new java.sql.Date(l.getData().getTime()));
-			
-		    ps.setInt(6, usr.getId());
+			ps.setDate(5, new java.sql.Date(l.getData().getTime()));
+
+			ps.setInt(6, usr.getId());
 			ps.setInt(7, l.getId());
-			
+
 			ps.executeUpdate();
 
 			CommitEFechar();
@@ -110,8 +122,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	@Override
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
 		String slc = "SELECT ID_LANCAMENTO, VALOR, DESCRICAO, ID_TIPO_CONTA, "
-				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.ID_CONTA AS ID_CONTA, " +
-				"DATA FROM "
+				+ "LANCAMENTO.ID_GRUPO_GASTO, ID_TIPO_GRUPO_GASTO, CONTA.ID_CONTA AS ID_CONTA, "
+				+ "DATA FROM "
 				+ "LANCAMENTO INNER JOIN CONTA ON LANCAMENTO.ID_CONTA = CONTA.ID_CONTA "
 				+ "INNER JOIN GRUPO_GASTO ON LANCAMENTO.ID_GRUPO_GASTO = GRUPO_GASTO.ID_GRUPO_GASTO "
 				+ "WHERE LANCAMENTO.ID_USUARIO = ? AND ID_LANCAMENTO = ?;";
@@ -143,11 +155,11 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 					break;
 				}
 				l.setConta(x);
-				
+
 				// converte objeto java.sql.Date para java.util.Date
 				// e preenche o lançamento com a informação
 				l.setData(new java.util.Date(rs.getDate("DATA").getTime()));
-				
+
 				x.setId(rs.getInt("ID_CONTA"));
 
 				if (rs.getObject(6) != null) {
@@ -237,7 +249,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		p.setString(1, "A");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Ativos");
-		
+
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
@@ -251,14 +263,14 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		p.setString(1, "R");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Rendimentos");
-		
+
 		p.executeUpdate();
 
 		p = con.prepareStatement(q);
 		p.setString(1, "D");
 		p.setInt(2, usr.getId());
 		p.setString(3, "Despesas");
-		
+
 		p.executeUpdate();
 	}
 
@@ -309,17 +321,16 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setString(1, l.getDescricao());
 			ps.setInt(2, l.getValor());
 			ps.setInt(3, l.getConta().getId());
-			ps.setInt(5,usr.getId());
-			
+			ps.setInt(5, usr.getId());
+
 			// Monta objeto java.sql.Date a partir de java.util.Date
 			ps.setDate(6, new java.sql.Date(l.getData().getTime()));
-			
+
 			if (l.getGrupo() == null)
 				ps.setNull(4, java.sql.Types.INTEGER);
 			else
 				ps.setInt(4, l.getGrupo().getId());
 			ps.executeUpdate();
-
 
 			CommitEFechar();
 		} catch (SQLException e) {
@@ -391,39 +402,42 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 					ContaAtivos ca = new ContaAtivos();
 					cj.setContaAtivos(ca);
 					ca.setId(rs.getInt("ID_CONTA"));
-					
+
 					break;
 				case "P":
 					ContaPassivos cp = new ContaPassivos();
 					cj.setContaPassivos(cp);
 					cp.setId(rs.getInt("ID_CONTA"));
-					
+
 					break;
 				case "D":
 					ContaDespesas cd = new ContaDespesas();
 					cj.setContaDespesas(cd);
 					cd.setId(rs.getInt("ID_CONTA"));
-				
+
 					break;
 				case "R":
 					ContaRendimentos cr = new ContaRendimentos();
 					cj.setContaRendimentos(cr);
 					cr.setId(rs.getInt("ID_CONTA"));
-					
+
 					break;
 				}
 			}
 
 			Conta x;
+			if (p != null) {
+				x = cj.getContaRendimentos();
+				preencherLancamentos(usr, x, p);
+				x = cj.getContaDespesas();
+				preencherLancamentos(usr, x, p);
+				x = cj.getContaAtivos();
+				preencherLancamentos(usr, x, p);
+				x = cj.getContaPassivos();
+				preencherLancamentos(usr, x, p);
 
-			x = cj.getContaRendimentos();
-			preencherLancamentos(usr, x);
-			x = cj.getContaDespesas();
-			preencherLancamentos(usr, x);
-			x = cj.getContaAtivos();
-			preencherLancamentos(usr, x);
-			x = cj.getContaPassivos();
-			preencherLancamentos(usr, x);
+				preencherSaldo(cj, p);
+			}
 
 			Fechar();
 
@@ -433,6 +447,51 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			TentarFecharDeNovo();
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void preencherSaldo(ConjuntoContas cj, Periodo p)
+	throws SQLException {
+		Conta x = cj.getContaRendimentos();		
+		int totalRenda = getTotalAcumulado(p, x);		
+		x = cj.getContaDespesas();		
+		int totalDespesa = getTotalAcumulado(p, x);		
+		cj.setSaldo(totalRenda - totalDespesa);
+		
+		
+		ContaAtivos ca = cj.getContaAtivos();
+		ContaPassivos cp = cj.getContaPassivos();
+		
+		ca.setSaldoAcumulado(getTotalAcumulado(p, ca));
+		cp.setSaldoAcumulado(getTotalAcumulado(p, cp));
+	}
+
+	/**
+	 * @param p
+	 * @param x
+	 * @throws SQLException
+	 */
+	private int getTotalAcumulado(Periodo p, Conta x) throws SQLException {
+		String sumQ = 
+				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
+				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
+				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
+				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
+				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
+				"" +
+				" WHERE LANCAMENTO.ID_CONTA = ?" +
+				" AND DATA <= ?" +
+				" ORDER BY DATA;";
+		PreparedStatement ps1 = con.prepareStatement(sumQ);
+		
+		ps1.setInt(1, x.getId());
+		ps1.setDate(2, new java.sql.Date(p.getDataFim().getTime()));
+		
+		ResultSet rs1 = ps1.executeQuery();
+		int total = 0;
+		while (rs1.next()) {
+			total = (rs1.getInt(1));
+		}
+		return total;
 	}
 
 	/**
@@ -520,14 +579,22 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	/**
 	 * @param usr
 	 * @param x
+	 * @param p
 	 * @throws SQLException
 	 *             busca os lancamentos de uma conta
 	 */
-	private void preencherLancamentos(Usuario usr, Conta x) throws SQLException {
-		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE ID_USUARIO = ? AND ID_CONTA = ? ORDER BY DATA;";
+	private void preencherLancamentos(Usuario usr, Conta x, Periodo p)
+			throws SQLException {
+		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE" +
+				" ID_USUARIO = ? AND ID_CONTA = ?" +
+				" AND DATA >= ? AND DATA <= ?" +
+				" ORDER BY DATA;";
 		PreparedStatement ps1 = con.prepareStatement(buscaLancto);
 		ps1.setInt(1, usr.getId());
 		ps1.setInt(2, x.getId());
+
+		ps1.setDate(3, new java.sql.Date(p.getDataInicio().getTime()));
+		ps1.setDate(4, new java.sql.Date(p.getDataFim().getTime()));
 		ResultSet rs1 = ps1.executeQuery();
 
 		while (rs1.next()) {
@@ -536,12 +603,34 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			l.setDescricao(rs1.getString(2));
 			l.setValor(rs1.getInt(3));
 			l.setConta(x);
-			
+
 			// converte objeto java.sql.Date para java.util.Date
 			// e preenche o lançamento com a informação
 			l.setData(new java.util.Date(rs1.getDate("DATA").getTime()));
-						
+
 			x.getLancamentos().add(l);
+		}
+		
+		String sumQ = 
+				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
+				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
+				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
+				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
+				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
+				"" +
+				" WHERE LANCAMENTO.ID_USUARIO = ? AND LANCAMENTO.ID_CONTA = ?" +
+				" AND DATA >= ? AND DATA <= ?" +
+				" ORDER BY DATA;";
+		ps1 = con.prepareStatement(sumQ);
+		
+		ps1.setInt(1, usr.getId());
+		ps1.setInt(2, x.getId());
+		ps1.setDate(3, new java.sql.Date(p.getDataInicio().getTime()));
+		ps1.setDate(4, new java.sql.Date(p.getDataFim().getTime()));
+		
+		rs1 = ps1.executeQuery();
+		while (rs1.next()) {
+			x.setTotal(rs1.getInt(1));
 		}
 	}
 
@@ -584,7 +673,6 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setInt(2, l.getId());
 			ps.executeUpdate();
 
-
 			CommitEFechar();
 		} catch (SQLException e) {
 			RollbackEFechar();
@@ -597,10 +685,10 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		ArrayList<Periodo> p = new ArrayList<Periodo>();
 		Conectar();
 		try {
-			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM " +
-					"FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ? ORDER BY DATA_INICIO" +
-					";";
-			PreparedStatement ins = con.prepareStatement(stmt);			
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
+					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ? ORDER BY DATA_INICIO"
+					+ ";";
+			PreparedStatement ins = con.prepareStatement(stmt);
 			ins.setInt(1, usr.getId());
 			ResultSet rst = ins.executeQuery();
 
@@ -620,15 +708,15 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	@Override
-	public void CadastrarPeriodo(Usuario usr,Periodo p) {
+	public void CadastrarPeriodo(Usuario usr, Periodo p) {
 		Conectar();
 		String s = "INSERT INTO PERIODOS_CONTABILIZACAO (DATA_INICIO, DATA_FIM, ID_USUARIO) VALUES (?,?,?);";
 		try {
 			PreparedStatement ps = con.prepareStatement(s);
-			ps.setDate(1, new java.sql.Date( p.getDataInicio().getTime() ));
-			ps.setDate(2, new java.sql.Date( p.getDataFim().getTime() ));
+			ps.setDate(1, new java.sql.Date(p.getDataInicio().getTime()));
+			ps.setDate(2, new java.sql.Date(p.getDataFim().getTime()));
 			ps.setInt(3, usr.getId());
-			
+
 			ps.executeUpdate();
 
 			CommitEFechar();
@@ -639,18 +727,18 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	@Override
-	public void EditarPeriodo(Usuario usr,Periodo p) {
+	public void EditarPeriodo(Usuario usr, Periodo p) {
 		Conectar();
-		String s = "UPDATE PERIODOS_CONTABILIZACAO SET " +
-				"DATA_INICIO = ?, DATA_FIM = ?, " +
-				"ID_USUARIO = ? WHERE ID_PERIODO = ?;";
+		String s = "UPDATE PERIODOS_CONTABILIZACAO SET "
+				+ "DATA_INICIO = ?, DATA_FIM = ?, "
+				+ "ID_USUARIO = ? WHERE ID_PERIODO = ?;";
 		try {
 			PreparedStatement ps = con.prepareStatement(s);
-			ps.setDate(1, new java.sql.Date( p.getDataInicio().getTime() ));
-			ps.setDate(2, new java.sql.Date( p.getDataFim().getTime() ));
+			ps.setDate(1, new java.sql.Date(p.getDataInicio().getTime()));
+			ps.setDate(2, new java.sql.Date(p.getDataFim().getTime()));
 			ps.setInt(3, usr.getId());
 			ps.setInt(4, p.getIdPeriodo());
-			
+
 			ps.executeUpdate();
 
 			CommitEFechar();
@@ -661,13 +749,12 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	@Override
-	public void ExcluirPeriodo(Usuario usr,Periodo p) {
+	public void ExcluirPeriodo(Usuario usr, Periodo p) {
 		Conectar();
 		try {
 			PreparedStatement ps = con
 					.prepareStatement("DELETE FROM PERIODOS_CONTABILIZACAO "
-							+ "WHERE ID_USUARIO = ? AND "
-							+ "ID_PERIODO = ?;");
+							+ "WHERE ID_USUARIO = ? AND " + "ID_PERIODO = ?;");
 			ps.setInt(1, usr.getId());
 			ps.setInt(2, p.getIdPeriodo());
 			ps.executeUpdate();
@@ -680,13 +767,13 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	@Override
-	public Periodo BuscarPeriodo(Usuario usr,int id) {
+	public Periodo BuscarPeriodo(Usuario usr, int id) {
 		Periodo p = null;
 		Conectar();
 		try {
-			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM " +
-					"FROM PERIODOS_CONTABILIZACAO WHERE ID_PERIODO = ? AND ID_USUARIO = ?" +
-					";";
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
+					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_PERIODO = ? AND ID_USUARIO = ?"
+					+ ";";
 			PreparedStatement ins = con.prepareStatement(stmt);
 			ins.setInt(1, id);
 			ins.setInt(2, usr.getId());
@@ -712,13 +799,13 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		Periodo p = null;
 		Conectar();
 		try {
-			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM " +
-					"FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ?" +
-					" AND DATA_INICIO <= ? AND DATA_FIM >= ?;";
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
+					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ?"
+					+ " AND DATA_INICIO <= ? AND DATA_FIM >= ?;";
 			PreparedStatement ins = con.prepareStatement(stmt);
 			ins.setInt(1, usr.getId());
-			ins.setDate(2,new java.sql.Date(d.getTime()));
-			ins.setDate(3,new java.sql.Date(d.getTime()));
+			ins.setDate(2, soD(new java.sql.Date(d.getTime())));
+			ins.setDate(3, soD(new java.sql.Date(d.getTime())));
 			ResultSet rst = ins.executeQuery();
 
 			while (rst.next()) {

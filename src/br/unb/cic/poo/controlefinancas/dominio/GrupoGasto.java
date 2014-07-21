@@ -15,13 +15,6 @@ public abstract class GrupoGasto {
 	private Collection<Conta> contas;
 
 	/**
-	 * Um multiplicador aplicado aos lançamentos realizados
-	 *         neste grupo.
-	 * @return o multiplicador, geralmente 1 ou -1.
-	 */
-	public abstract int getMultiplicador();
-
-	/**
 	 * @return o nome
 	 */
 	public String getNome() {
