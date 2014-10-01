@@ -4,6 +4,7 @@ import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaPeriodo;
+import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaSubconta;
 import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.persistencia.ContasEmMemoria;
 import br.unb.cic.poo.controlefinancas.persistencia.GruposGastoEmMemoria;
@@ -73,6 +74,12 @@ public class FabricaMemoria extends Fabrica {
 	@Override
 	protected IPersistenciaPeriodo criarPersistenciaPeriodo() {
 		// WONTFIX nao implementado
+		return null;
+	}
+
+	@Override
+	protected IPersistenciaSubconta criarPersistenciaSubconta() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

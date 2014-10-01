@@ -32,7 +32,7 @@ public abstract class Rota {
 			}
 		});
 		
-		definirSubRotasProtected(nomeRota);
+		definirSubRotasProtected(nomeRota);		
 	}
 	
 	protected abstract String getRotaPadrao();

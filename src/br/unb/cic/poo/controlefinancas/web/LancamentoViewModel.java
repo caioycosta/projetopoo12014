@@ -1,6 +1,6 @@
 package br.unb.cic.poo.controlefinancas.web;
 
-import java.util.*;
+import java.util.Collection;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
 
@@ -13,6 +13,9 @@ public class LancamentoViewModel extends ViewModelBase {
 	String mensagem;
 	int idGrupo;
 	int idConta;
+	
+	private Collection<Subconta> subcontas;
+	
 	/**
 	 * @return o idConta
 	 */
@@ -86,5 +89,17 @@ public class LancamentoViewModel extends ViewModelBase {
 	 */
 	public void setContas(Collection<Conta> contas) {
 		this.contas = contas;
+	}
+	/**
+	 * @return the subcontas
+	 */
+	public Collection<Subconta> getSubcontas() {
+		return subcontas;
+	}
+	/**
+	 * @param subcontas the subcontas to set
+	 */
+	public void setSubcontas(Collection<Subconta> subcontas) {
+		this.subcontas = subcontas;
 	}
 }

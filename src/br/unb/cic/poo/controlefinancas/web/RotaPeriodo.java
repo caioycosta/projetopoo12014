@@ -4,12 +4,13 @@
 package br.unb.cic.poo.controlefinancas.web;
 
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerRoute;
+import br.unb.cic.poo.controlefinancas.dominio.MinhaClasseData;
 import br.unb.cic.poo.controlefinancas.dominio.Periodo;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 import br.unb.cic.poo.controlefinancas.negocio.NegocioPeriodos;
@@ -96,7 +97,6 @@ public class RotaPeriodo extends Rota {
 		});
 
 		Spark.post(new FreeMarkerRoute(nomeRota + "/editar/:id") {
-			@SuppressWarnings("deprecation")
 			@Override
 			public Object tempHandle(Request request, Response response) {
 
@@ -106,11 +106,11 @@ public class RotaPeriodo extends Rota {
 
 				Periodo p = np.BuscarPeriodo(usr,
 						Integer.parseInt(request.params(":id")));
-				p.setDataInicio(new Date(Integer.parseInt(request
+				p.setDataInicio(new MinhaClasseData(Integer.parseInt(request
 						.queryParams("anoi")) - 1900, Integer.parseInt(request
 						.queryParams("mesi")) - 1, Integer.parseInt(request
 						.queryParams("diai"))));
-				p.setDataFim(new Date(Integer.parseInt(request
+				p.setDataFim(new MinhaClasseData(Integer.parseInt(request
 						.queryParams("anof")) - 1900, Integer.parseInt(request
 						.queryParams("mesf")) - 1, Integer.parseInt(request
 						.queryParams("diaf"))));
@@ -138,7 +138,6 @@ public class RotaPeriodo extends Rota {
 
 		Spark.post(new FreeMarkerRoute(nomeRota + "/criar") {			
 			@Override
-			@SuppressWarnings("deprecation")
 			public Object tempHandle(Request request, Response response) {
 
 				Usuario usr = (Usuario) (request.session().attribute("usuario"));
@@ -146,11 +145,11 @@ public class RotaPeriodo extends Rota {
 				NegocioPeriodos np = getFabrica().criarNegocioPeriodo();
 
 				Periodo p = new Periodo(); 
-				p.setDataInicio(new Date(Integer.parseInt(request
+				p.setDataInicio(new MinhaClasseData(Integer.parseInt(request
 						.queryParams("anoi")) - 1900, Integer.parseInt(request
 						.queryParams("mesi")) - 1, Integer.parseInt(request
 						.queryParams("diai"))));
-				p.setDataFim(new Date(Integer.parseInt(request
+				p.setDataFim(new MinhaClasseData(Integer.parseInt(request
 						.queryParams("anof")) - 1900, Integer.parseInt(request
 						.queryParams("mesf")) - 1, Integer.parseInt(request
 						.queryParams("diaf"))));

@@ -1,7 +1,7 @@
 package br.unb.cic.poo.controlefinancas.web;
 
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
 import br.unb.cic.poo.controlefinancas.negocio.*;
@@ -54,6 +54,7 @@ public class RotaLancamento extends Rota {
 						Integer.parseInt(request.params(":id")));
 				LancamentoViewModel vwb = new LancamentoViewModel();
 
+				vwb.setSubcontas(getFabrica().criarNegocioSubconta().listarSubconta(usr));
 				vwb.setGruposGasto(ng.listarGruposGasto(usr));
 				vwb.setContas(l.getGrupo().getContas());
 				vwb.setIdGrupo(l.getGrupo().getId());
@@ -68,7 +69,6 @@ public class RotaLancamento extends Rota {
 		});
 
 		Spark.post(new FreeMarkerRoute(nomeRota + "/editar/:id") {
-			@SuppressWarnings("deprecation")
 			@Override
 			public Object tempHandle(Request request, Response response) {
 				int idGrupoGasto = Integer.parseInt(request
@@ -80,6 +80,8 @@ public class RotaLancamento extends Rota {
 
 				LancamentoViewModel vwb = new LancamentoViewModel();
 
+				vwb.setSubcontas(getFabrica().criarNegocioSubconta().listarSubconta(usr));
+				
 				vwb.setGruposGasto(g.listarGruposGasto(usr));
 				vwb.setIdGrupo(idGrupoGasto);
 				GrupoGasto gruposelecionado = null;
@@ -114,17 +116,25 @@ public class RotaLancamento extends Rota {
 					l.setValor(Integer.parseInt(request.queryParams("valor")));
 					l.setId(Integer.parseInt(request.params(":id")));
 					
-					l.setData(new Date(Integer.parseInt(request.queryParams("ano")) - 1900,
+					l.setData(new MinhaClasseData(Integer.parseInt(request.queryParams("ano")) - 1900,
 							Integer.parseInt(request.queryParams("mes")) - 1, 
 							Integer.parseInt(request.queryParams("dia"))));
 					
 					NegocioLancamentos nl = getFabrica()
 							.criarNegocioLancamentos();
 
+					if (!request.queryParams("subc").equals("nada"))
+					{
+						l.setSubconta(getFabrica().criarNegocioSubconta()
+								.buscarSubconta(Integer.parseInt(request
+										.queryParams("subc"))));
+					}
+					
 					nl.alterarLancamento(l, usr);
 
 					vwb.setMensagem("Lancamento cadastro OK");
 				}
+				
 
 				
 				vwb.setInfo("Digite os novos dados do lançamento.");
@@ -146,6 +156,7 @@ public class RotaLancamento extends Rota {
 
 				vwb.setGruposGasto(g.listarGruposGasto(usr));
 
+				vwb.setSubcontas(getFabrica().criarNegocioSubconta().listarSubconta(usr));
 				
 				vwb.setInfo("Digite os dados do novo lançamento.");
 				vwb.setTitulo("Criação de lançamento");
@@ -157,7 +168,6 @@ public class RotaLancamento extends Rota {
 		});
 
 		Spark.post(new FreeMarkerRoute(nomeRota + "/criar") {
-			@SuppressWarnings("deprecation")
 			@Override
 			public Object tempHandle(Request request, Response response) {
 				int idGrupoGasto = Integer.parseInt(request
@@ -169,6 +179,8 @@ public class RotaLancamento extends Rota {
 
 				LancamentoViewModel vwb = new LancamentoViewModel();
 
+				vwb.setSubcontas(getFabrica().criarNegocioSubconta().listarSubconta(usr));
+				
 				vwb.setGruposGasto(g.listarGruposGasto(usr));
 				vwb.setIdGrupo(idGrupoGasto);
 				GrupoGasto gruposelecionado = null;
@@ -205,10 +217,18 @@ public class RotaLancamento extends Rota {
 					int ano = Integer.parseInt(request.queryParams("ano")) - 1900;
 					int mes = Integer.parseInt(request.queryParams("mes")) - 1;
 					int dia = Integer.parseInt(request.queryParams("dia"));
-					l.setData(new Date(ano, mes , dia));
+					l.setData(new MinhaClasseData(ano, mes , dia));
 					
 					NegocioLancamentos nl = getFabrica()
 							.criarNegocioLancamentos();
+					
+					if (!request.queryParams("subc").equals("nada"))
+					{
+						l.setSubconta(getFabrica().criarNegocioSubconta()
+								.buscarSubconta(Integer.parseInt(request
+										.queryParams("subc"))));
+					}
+					
 					nl.criarLancamento(l, usr);
 
 					vwb.setMensagem("Lancamento cadastro OK");

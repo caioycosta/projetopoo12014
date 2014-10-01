@@ -24,6 +24,7 @@ public class DefinicoesRotas {
 		new RotaLancamento().definirSubRotas("/lancamento");		
 		new RotaRelatorio().definirSubRotas("/relatorios");
 		new RotaPeriodo().definirSubRotas("/periodo");
+		new RotaSubconta().definirSubRotas("/subconta");
 		
 		// rota padrão
 		Spark.get(new Route("/") {

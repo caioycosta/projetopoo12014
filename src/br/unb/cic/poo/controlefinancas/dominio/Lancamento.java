@@ -1,6 +1,6 @@
 package br.unb.cic.poo.controlefinancas.dominio;
 
-import java.util.Date;
+
 
 /**
  * @author CaioYuri
@@ -12,21 +12,22 @@ public class Lancamento {
 	private Conta conta;
 	private GrupoGasto grupo;
 	int id;
-	private Date data;
+	private MinhaClasseData data;
+	private Subconta subconta;
 
 	/**
 	 * esta é a data de efetivação
 	 * do lançamento, não a data de sua criação.
 	 * @return a data do lançamento
 	 */
-	public Date getData() {
+	public MinhaClasseData getData() {
 		return data;
 	}
 
 	/**
 	 * @param data a data para setar
 	 */
-	public void setData(Date data) {
+	public void setData(MinhaClasseData data) {
 		this.data = data;
 	}
 
@@ -98,5 +99,19 @@ public class Lancamento {
 	 */
 	public void setGrupo(GrupoGasto grupo) {
 		this.grupo = grupo;
+	}
+
+	/**
+	 * @return the subconta
+	 */
+	public Subconta getSubconta() {
+		return subconta;
+	}
+
+	/**
+	 * @param subconta the subconta to set
+	 */
+	public void setSubconta(Subconta subconta) {
+		this.subconta = subconta;
 	}
 }

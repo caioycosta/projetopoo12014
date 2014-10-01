@@ -23,6 +23,7 @@ public class ViewModelBase {
 		ListaCategorias.add("Lancamento");
 		ListaCategorias.add("Relatorios");
 		ListaCategorias.add("Periodo");
+		ListaCategorias.add("Subconta");
 	}
 	
 	/**

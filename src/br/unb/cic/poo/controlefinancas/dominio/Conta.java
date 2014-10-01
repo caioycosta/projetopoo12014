@@ -3,7 +3,8 @@
  */
 package br.unb.cic.poo.controlefinancas.dominio;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author CaioYuri
@@ -13,7 +14,7 @@ public abstract class Conta {
 	private int total;
 	private int id;
 	private Collection<Lancamento> lancamentos;
-
+	private Collection<Subconta> subcontas;
 	
 	/**
 	 * cria novo objeto conta
@@ -68,5 +69,21 @@ public abstract class Conta {
 	 */
 	public void setLancamentos(Collection<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
+	}
+
+
+	/**
+	 * @return the subcontas
+	 */
+	public Collection<Subconta> getSubcontas() {
+		return subcontas;
+	}
+
+
+	/**
+	 * @param subcontas the subcontas to set
+	 */
+	public void setSubcontas(Collection<Subconta> subcontas) {
+		this.subcontas = subcontas;
 	}	
 }

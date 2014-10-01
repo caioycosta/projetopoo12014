@@ -10,8 +10,8 @@ package br.unb.cic.poo.controlefinancas.dominio;
  */
 public class Periodo {
 	private int IdPeriodo;
-	private java.util.Date DataInicio;
-	private java.util.Date DataFim;
+	private MinhaClasseData DataInicio;
+	private MinhaClasseData DataFim;
 	/**
 	 * @return the idPeriodo
 	 */
@@ -27,25 +27,25 @@ public class Periodo {
 	/**
 	 * @return the dataInicio
 	 */
-	public java.util.Date getDataInicio() {
+	public MinhaClasseData getDataInicio() {
 		return DataInicio;
 	}
 	/**
 	 * @param dataInicio the dataInicio to set
 	 */
-	public void setDataInicio(java.util.Date dataInicio) {
+	public void setDataInicio(MinhaClasseData dataInicio) {
 		DataInicio = dataInicio;
 	}
 	/**
 	 * @return the dataFim
 	 */
-	public java.util.Date getDataFim() {
+	public MinhaClasseData getDataFim() {
 		return DataFim;
 	}
 	/**
 	 * @param dataFim the dataFim to set
 	 */
-	public void setDataFim(java.util.Date dataFim) {
+	public void setDataFim(MinhaClasseData dataFim) {
 		DataFim = dataFim;
 	}
 }
