@@ -2,7 +2,7 @@
 <#setting number_format="computer">
 <html>
 <head>
-    <title>Controle de finan�as</title>
+    <title>Controle de finanças</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="expires" content="-1" />
@@ -21,7 +21,7 @@
         </div>
         <div id="middle">
             <div id="left-column">
-            <h3>Opera��es</h3>
+            <h3>Operações</h3>
         	<#list listaPaginas as lp>
         	<a href='/${categoriaAtual}/${lp}' class='link'>${lp}</a>
     

@@ -1,5 +1,5 @@
 <#include "header.ftl">
-<h1>Cadastrar novo usu·rio</h1>
+<h1>Cadastrar novo usu√°rio</h1>
 <#if (mensagem)??>${mensagem}<#else>Digite seus dados.</#if> </br>
 <form method="post">
 Nome <input type="text" name="nome" /> <br/>

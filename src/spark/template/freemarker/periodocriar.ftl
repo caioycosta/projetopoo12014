@@ -1,5 +1,5 @@
 <#include "header.ftl">
-<h1>Cadastrar novo período de contabilização</h1>
+<h1>Cadastrar novo perÃ­odo de contabilizaÃ§Ã£o</h1>
 </br>
 <form method="post">
 DataInicio 

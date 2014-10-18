@@ -1,7 +1,7 @@
             </div> 
             </div>
             <div id="right-column">
-                <strong class="h">InformaÁ„o</strong>
+                <strong class="h">Informa√ß√£o</strong>
                 <div class="box">
                 ${info}
                 </div>
@@ -14,7 +14,7 @@
     var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
     	
-        if (!confirm('SÌlvio pergunta: Est· certo dissoom?')) { 
+        if (!confirm('S√≠lvio pergunta: Est√° certo dissoom?')) { 
         
         e.preventDefault();
         return false;

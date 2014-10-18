@@ -15,16 +15,16 @@
 </form>
 <br/>
 <h2>${contaAtivos.nome}</h2>
-Total do período: ${(contaAtivos.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(contaAtivos.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(contaAtivos.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(contaAtivos.saldoAcumulado/100)?string.currency}<br/>
 <br/>
 <#list (contaAtivos.subcontas) as s>
 
 <h3>${s.nome}</h3>
-Total do período: ${(s.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(s.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(s.saldoAcumulado/100)?string.currency}<br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (s.lancamentos) as ld>
 
 <tr>
@@ -41,7 +41,7 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </#list>
 <br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (contaAtivos.lancamentos) as ld>
 <tr>
 <td>${ld.id}</td>
@@ -54,16 +54,16 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </table>
 
 <h2>${contaPassivos.nome}</h2>
-Total do período: ${(contaPassivos.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(contaPassivos.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(contaPassivos.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(contaPassivos.saldoAcumulado/100)?string.currency}<br/>
 <br/>
 <#list (contaPassivos.subcontas) as s>
 
 <h3>${s.nome}</h3>
-Total do período: ${(s.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(s.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(s.saldoAcumulado/100)?string.currency}<br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (s.lancamentos) as ld>
 
 <tr>
@@ -80,7 +80,7 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </#list>
 <br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (contaPassivos.lancamentos) as ld>
 <tr>
 <td>${ld.id}</td>
@@ -93,19 +93,19 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </table>
 <br/>
 <hr/><hr/>
-Saldo do período: ${(cj.saldoMes/100)?string.currency} <br/>
-Saldo acumulado, ao fim do período: ${(cj.saldo/100)?string.currency}
+Saldo do perÃ­odo: ${(cj.saldoMes/100)?string.currency} <br/>
+Saldo acumulado, ao fim do perÃ­odo: ${(cj.saldo/100)?string.currency}
 <br/>
 <h2>${contaRendimentos.nome}</h2>
-Total do período: ${(contaRendimentos.total/100)?string.currency}
+Total do perÃ­odo: ${(contaRendimentos.total/100)?string.currency}
 <br/><br/>
 <#list (contaRendimentos.subcontas) as s>
 
 <h3>${s.nome}</h3>
-Total do período: ${(s.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(s.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(s.saldoAcumulado/100)?string.currency}<br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (s.lancamentos) as ld>
 
 <tr>
@@ -122,7 +122,7 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </#list>
 <br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (contaRendimentos.lancamentos) as ld>
 <tr>
 <td>${ld.id}</td>
@@ -135,15 +135,15 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </table>
 
 <h2>${contaDespesas.nome}</h2>
-Total do período: ${(contaDespesas.total / 100)?string.currency}
+Total do perÃ­odo: ${(contaDespesas.total / 100)?string.currency}
 <br/><br/>
 <#list (contaDespesas.subcontas) as s>
 
 <h3>${s.nome}</h3>
-Total do período: ${(s.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(s.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(s.saldoAcumulado/100)?string.currency}<br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (s.lancamentos) as ld>
 
 <tr>
@@ -161,10 +161,10 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 <br/><#list (contaDespesas.subcontas) as s>
 
 <h3>${s.nome}</h3>
-Total do período: ${(s.total/100)?string.currency}<br/>
-Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br/>
+Total do perÃ­odo: ${(s.total/100)?string.currency}<br/>
+Total acumulado atÃ© fim do perÃ­odo: ${(s.saldoAcumulado/100)?string.currency}<br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (s.lancamentos) as ld>
 
 <tr>
@@ -181,7 +181,7 @@ Total acumulado até fim do período: ${(s.saldoAcumulado/100)?string.currency}<br
 </#list>
 <br/>
 <table class="listing">
-<tr><th>ID</th><th>Data</th><th>Descrição</th><th>Valor</th><th></th></tr>
+<tr><th>ID</th><th>Data</th><th>DescriÃ§Ã£o</th><th>Valor</th><th></th></tr>
 <#list (contaDespesas.lancamentos) as ld>
 <tr>
 <td>${ld.id}</td>
