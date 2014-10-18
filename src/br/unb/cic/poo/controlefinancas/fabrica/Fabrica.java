@@ -1,6 +1,12 @@
 package br.unb.cic.poo.controlefinancas.fabrica;
 
-import br.unb.cic.poo.controlefinancas.dominio.*;
+
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaPeriodo;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaSubconta;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.negocio.*;
 
 /**

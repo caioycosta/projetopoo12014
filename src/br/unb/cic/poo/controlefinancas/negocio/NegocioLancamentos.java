@@ -3,6 +3,8 @@ package br.unb.cic.poo.controlefinancas.negocio;
 import java.util.Collection;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos;
 
 /**
  * @author CaioYuri

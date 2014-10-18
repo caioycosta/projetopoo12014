@@ -1,6 +1,9 @@
-package br.unb.cic.poo.controlefinancas.dominio;
+package br.unb.cic.poo.controlefinancas.dominio.interfaces;
 
 import java.util.Collection;
+
+import br.unb.cic.poo.controlefinancas.dominio.GrupoGasto;
+import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 
 
 

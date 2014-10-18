@@ -1,6 +1,7 @@
 package br.unb.cic.poo.controlefinancas.persistencia;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos;
 
 /**
  * @author CaioYuri
@@ -11,7 +12,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 	static int ultimoid = 0;
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#criarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento, br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#criarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento, br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public void criarLancamento(Lancamento l, Usuario usr) {
@@ -22,7 +23,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#buscarLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, int)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#buscarLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, int)
 	 */
 	@Override
 	public Lancamento buscarLancamento(Usuario usr, int parseInt) {
@@ -58,7 +59,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#alterarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento, br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#alterarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento, br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public void alterarLancamento(Lancamento l, Usuario usr) {
@@ -92,7 +93,7 @@ public class LancamentosEmMemoria implements IPersistenciaLancamentos {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.Lancamento)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.Lancamento)
 	 */
 	@Override
 	public void excluirLancamento(Usuario u, Lancamento l) {

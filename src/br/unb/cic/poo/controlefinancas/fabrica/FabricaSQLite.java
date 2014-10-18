@@ -1,11 +1,11 @@
 package br.unb.cic.poo.controlefinancas.fabrica;
 
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaPeriodo;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaSubconta;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaPeriodo;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaSubconta;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.persistencia.PersistenciaSQLite;
 
 /**
@@ -21,7 +21,7 @@ public class FabricaSQLite extends Fabrica {
 	}
 	
 	/**
-	 * construtor privado pois é singleton
+	 * construtor privado pois ï¿½ singleton
 	 */
 	private FabricaSQLite() {
 		

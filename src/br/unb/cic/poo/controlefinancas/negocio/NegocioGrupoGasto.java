@@ -3,8 +3,8 @@ package br.unb.cic.poo.controlefinancas.negocio;
 import java.util.Collection;
 
 import br.unb.cic.poo.controlefinancas.dominio.GrupoGasto;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
 /**
  * @author CaioYuri
  * regras do negocio para grupo de gasto

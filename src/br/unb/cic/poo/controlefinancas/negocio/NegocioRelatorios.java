@@ -1,8 +1,8 @@
 package br.unb.cic.poo.controlefinancas.negocio;
 
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
 import br.unb.cic.poo.controlefinancas.dominio.RelatorioPatrimonial;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
 
 public class NegocioRelatorios {
 	IPersistenciaConta pers;

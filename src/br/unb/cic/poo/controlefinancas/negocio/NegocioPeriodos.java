@@ -5,9 +5,9 @@ package br.unb.cic.poo.controlefinancas.negocio;
 
 import java.util.Collection;
 
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaPeriodo;
 import br.unb.cic.poo.controlefinancas.dominio.Periodo;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaPeriodo;
 
 /**
  * @author CaioYuri

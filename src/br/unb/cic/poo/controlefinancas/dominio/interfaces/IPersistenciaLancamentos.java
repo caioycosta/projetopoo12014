@@ -1,4 +1,7 @@
-package br.unb.cic.poo.controlefinancas.dominio;
+package br.unb.cic.poo.controlefinancas.dominio.interfaces;
+
+import br.unb.cic.poo.controlefinancas.dominio.Lancamento;
+import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 
 /**
  * @author CaioYuri

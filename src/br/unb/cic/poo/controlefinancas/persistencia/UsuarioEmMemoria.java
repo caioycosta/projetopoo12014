@@ -2,8 +2,8 @@ package br.unb.cic.poo.controlefinancas.persistencia;
 
 import java.util.HashMap;
 
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
 
 /**
  * @author CaioYuri
@@ -20,7 +20,7 @@ public class UsuarioEmMemoria implements IPersistenciaUsuario {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario#CadastrarUsuario(br.unb.cic.poo.controlefinancas.dominio.Usuario, java.lang.String)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario#CadastrarUsuario(br.unb.cic.poo.controlefinancas.dominio.Usuario, java.lang.String)
 	 */
 	@Override
 	public void CadastrarUsuario(Usuario usr, String senha) {
@@ -29,7 +29,7 @@ public class UsuarioEmMemoria implements IPersistenciaUsuario {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario#loginUsuario(java.lang.String, java.lang.String)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario#loginUsuario(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Usuario loginUsuario(String login, String senha) {

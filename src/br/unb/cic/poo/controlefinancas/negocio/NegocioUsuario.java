@@ -1,7 +1,7 @@
 package br.unb.cic.poo.controlefinancas.negocio;
 
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
 
 /**
  * @author CaioYuri
@@ -29,7 +29,7 @@ public class NegocioUsuario {
 	public ResultadoOperacao CadastrarUsuario(Usuario usr, String senha)
 	{
 		if (usr.getNome() == null || usr.getNome().isEmpty())
-			return new ResultadoOperacao(false, "Nome de usuário em branco");
+			return new ResultadoOperacao(false, "Nome de usuï¿½rio em branco");
 		
 		if (senha == null || senha.isEmpty())
 			return new ResultadoOperacao(false, "Senha em branco");
@@ -52,7 +52,7 @@ public class NegocioUsuario {
 		{
 			return new ResultadoOperacaoG<Usuario>(true,resultado);
 		} else {
-			return new ResultadoOperacaoG<Usuario>(false, "login ou senha inválidos", null);
+			return new ResultadoOperacaoG<Usuario>(false, "login ou senha invï¿½lidos", null);
 		}
 	}
 }

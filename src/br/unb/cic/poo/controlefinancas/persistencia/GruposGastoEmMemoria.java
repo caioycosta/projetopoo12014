@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
 
 /**
  * @author CaioYuri
@@ -20,7 +21,7 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 	}
 	static int ultimoid = 0;
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#criarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.GrupoGasto)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#criarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario, br.unb.cic.poo.controlefinancas.dominio.GrupoGasto)
 	 */
 	@Override
 	public void criarGrupoGasto(Usuario usr, GrupoGasto grp) {
@@ -38,7 +39,7 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#listarGruposGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#listarGruposGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public Collection<GrupoGasto> listarGruposGasto(Usuario usr) {
@@ -57,7 +58,7 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto, br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto, br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto, br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public void alterarGrupoGasto(GrupoGasto grp, Usuario usr) {
@@ -76,7 +77,7 @@ public class GruposGastoEmMemoria implements IPersistenciaGrupoGasto {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#excluirGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario, int)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#excluirGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario, int)
 	 */
 	@Override
 	public void excluirGrupoGasto(Usuario usr, int parseInt) {

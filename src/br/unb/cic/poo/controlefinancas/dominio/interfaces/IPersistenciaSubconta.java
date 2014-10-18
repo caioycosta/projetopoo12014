@@ -1,6 +1,10 @@
-package br.unb.cic.poo.controlefinancas.dominio;
+package br.unb.cic.poo.controlefinancas.dominio.interfaces;
 
 import java.util.Collection;
+
+import br.unb.cic.poo.controlefinancas.dominio.Conta;
+import br.unb.cic.poo.controlefinancas.dominio.Subconta;
+import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 
 public interface IPersistenciaSubconta {
 	public void criarSubconta(Subconta s, Conta c);

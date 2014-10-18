@@ -3,6 +3,7 @@ package br.unb.cic.poo.controlefinancas.persistencia;
 import java.util.HashMap;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
 
 /**
  * @author CaioYuri
@@ -18,7 +19,7 @@ public class ContasEmMemoria implements IPersistenciaConta {
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public ConjuntoContas listarContas(Usuario usr, Periodo p) {

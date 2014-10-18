@@ -2,6 +2,7 @@ package br.unb.cic.poo.controlefinancas.persistencia;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import br.unb.cic.poo.controlefinancas.dominio.ConjuntoContas;
 import br.unb.cic.poo.controlefinancas.dominio.Conta;
 import br.unb.cic.poo.controlefinancas.dominio.ContaAtivos;
@@ -12,16 +13,17 @@ import br.unb.cic.poo.controlefinancas.dominio.MinhaClasseData;
 import br.unb.cic.poo.controlefinancas.dominio.GrupoGasto;
 import br.unb.cic.poo.controlefinancas.dominio.GrupoGastoDespesa;
 import br.unb.cic.poo.controlefinancas.dominio.GrupoGastoReceita;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaPeriodo;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaSubconta;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Lancamento;
 import br.unb.cic.poo.controlefinancas.dominio.Periodo;
 import br.unb.cic.poo.controlefinancas.dominio.Subconta;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaPeriodo;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaSubconta;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
+
 import java.sql.*;
 
 import org.sqlite.SQLiteConfig;
@@ -35,20 +37,10 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		IPersistenciaUsuario, IPersistenciaPeriodo,
 		IPersistenciaSubconta {
 
-	@SuppressWarnings("deprecation")
-	private java.sql.Date soD(java.sql.Date d)
-	{
-		/*d.setHours(0);
-		d.setMinutes(0);
-		d.setSeconds(0);
-		d.setTime(d.getTime() - (d.getTime() % 1000)); */
-		return new java.sql.Date(d.getYear(), d.getMonth(), d.getDate());
-	}
-	
 	private Connection con = null;
-
+	
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#alterarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.GrupoGasto,
 	 *      br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
@@ -82,10 +74,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		}
 	}
 
-	
-	
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#alterarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#alterarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento,
 	 *      br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
@@ -131,8 +121,10 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		}
 	}
 
+	
+	
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#buscarLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#buscarLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario,
 	 *      int)
 	 */
 	@Override
@@ -173,7 +165,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 				l.setConta(x);
 
 				// converte objeto java.sql.Date para .Data
-				// e preenche o lançamento com a informação
+				// e preenche o lanï¿½amento com a informaï¿½ï¿½o
 				l.setData(new MinhaClasseData(rs.getDate("DATA").getTime()));
 
 				x.setId(rs.getInt("ID_CONTA"));
@@ -194,8 +186,140 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 
 	}
 
+	@Override
+	public Periodo BuscarPeriodo(Usuario usr, int id) {
+		Periodo p = null;
+		Conectar();
+		try {
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
+					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_PERIODO = ? AND ID_USUARIO = ?"
+					+ ";";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, id);
+			ins.setInt(2, usr.getId());
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				p = new Periodo();
+				p.setIdPeriodo(id);
+				p.setDataFim(new MinhaClasseData(rst.getDate(3).getTime()));
+				p.setDataInicio(new MinhaClasseData(rst.getDate(2).getTime()));
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
+	}
+
+	@Override
+	public Periodo BuscarPeriodoCorrente(Usuario usr) {
+		MinhaClasseData d = MinhaClasseData.agora();
+		Periodo p = null;
+		Conectar();
+		try {
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
+					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ?"
+					+ " AND DATA_INICIO <= ? AND DATA_FIM >= ?;";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, usr.getId());
+			ins.setDate(2, soD(new java.sql.Date(d.paraTime())));
+			ins.setDate(3, soD(new java.sql.Date(d.paraTime())));
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				p = new Periodo();
+				p.setIdPeriodo(rst.getInt("ID_PERIODO"));
+				p.setDataFim(new MinhaClasseData(rst.getDate("DATA_FIM").getTime()));
+				p.setDataInicio(new MinhaClasseData(rst.getDate("DATA_INICIO").getTime()));
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
+	}
+
+	@Override
+	public Collection<Periodo> buscarPeriodos(Usuario usr) {
+		ArrayList<Periodo> p = new ArrayList<Periodo>();
+		Conectar();
+		try {
+			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
+					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ? ORDER BY DATA_INICIO"
+					+ ";";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, usr.getId());
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				Periodo m = new Periodo();
+				m.setIdPeriodo(rst.getInt(1));
+				m.setDataFim(new MinhaClasseData(rst.getDate(3).getTime()));
+				m.setDataInicio(new MinhaClasseData(rst.getDate(2).getTime()));
+				p.add(m);
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
+	}
+
+	@Override
+	public Subconta buscarSubconta(int id) {
+		Subconta m = null;
+		Conectar();
+		try {
+			String stmt = " SELECT ID_SUBCONTA, DATA_INICIO, DATA_FIM, SUBCONtA.NOME, subconta.ID_CONTA "
+					+ "FROM SUBCONtA " +
+					
+					"WHERE ID_SUBCONTA = ? ORDER BY DATA_INICIO"
+					+ ";";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, id);
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				m = new Subconta();
+				m.setNome(rst.getString("NOME"));
+				m.setId(rst.getInt("ID_SUBCONTA"));				
+				m.setDataFim(new MinhaClasseData(rst.getDate("DATA_FIM").getTime()));
+				m.setDataInicio(new MinhaClasseData(rst.getDate("DATA_INICIO").getTime()));
+				
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return m;
+	}
+
+	@Override
+	public void CadastrarPeriodo(Usuario usr, Periodo p) {
+		Conectar();
+		String s = "INSERT INTO PERIODOS_CONTABILIZACAO (DATA_INICIO, DATA_FIM, ID_USUARIO) VALUES (?,?,?);";
+		try {
+			PreparedStatement ps = con.prepareStatement(s);
+			ps.setDate(1, new java.sql.Date(p.getDataInicio().paraTime()));
+			ps.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
+			ps.setInt(3, usr.getId());
+
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario#CadastrarUsuario(br.unb.cic.poo.controlefinancas.dominio.Usuario,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario#CadastrarUsuario(br.unb.cic.poo.controlefinancas.dominio.Usuario,
 	 *      java.lang.String)
 	 */
 	@Override
@@ -231,7 +355,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * Cria uma nova conexão com o banco de dados.
+	 * Cria uma nova conexï¿½o com o banco de dados.
 	 */
 	private void Conectar() {
 		try {
@@ -254,7 +378,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * Cria o conjunto de contas de um novo usuário
+	 * Cria o conjunto de contas de um novo usuï¿½rio
 	 * 
 	 * @param usr
 	 *            usuario que foi criado
@@ -291,7 +415,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#criarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#criarGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario,
 	 *      br.unb.cic.poo.controlefinancas.dominio.GrupoGasto)
 	 */
 	@Override
@@ -325,7 +449,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#criarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#criarLancamento(br.unb.cic.poo.controlefinancas.dominio.Lancamento,
 	 *      br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
@@ -364,8 +488,81 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 
 	}
 
+	@Override
+	public void criarSubconta(Subconta s, Conta c) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("INSERT INTO SUBCONTA " +
+							"(NOME, DATA_INICIO, DATA_FIM, ID_CONTA) VALUES"
+							+ "(?,?,?,?) ;");
+			ps.setString(1, s.getNome());
+			ps.setDate(2,new java.sql.Date(s.getDataInicio().paraTime()));
+			ps.setDate(3,new java.sql.Date(s.getDataFim().paraTime()));
+			ps.setInt(4, c.getId());
+			
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void EditarPeriodo(Usuario usr, Periodo p) {
+		Conectar();
+		String s = "UPDATE PERIODOS_CONTABILIZACAO SET "
+				+ "DATA_INICIO = ?, DATA_FIM = ?, "
+				+ "ID_USUARIO = ? WHERE ID_PERIODO = ?;";
+		try {
+			PreparedStatement ps = con.prepareStatement(s);
+			ps.setDate(1, new java.sql.Date(p.getDataInicio().paraTime()));
+			ps.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
+			ps.setInt(3, usr.getId());
+			ps.setInt(4, p.getIdPeriodo());
+
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void editarSubconta(Subconta s, Conta c) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement
+					("UPDATE SUBCONTA " +
+					"SET NOME = ?, " +
+					"DATA_INICIO = ?, " +
+					"DATA_FIM = ?, " +
+					"ID_CONTA = ? " +
+					"WHERE ID_SUBCONTA = ?;");
+			
+			
+			ps.setString(1, s.getNome());
+			ps.setDate(2,new java.sql.Date(s.getDataInicio().paraTime()));
+			ps.setDate(3,new java.sql.Date(s.getDataFim().paraTime()));
+			ps.setInt(4, c.getId());
+			ps.setInt(5, s.getId());
+			
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+	
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#excluirGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#excluirGrupoGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario,
 	 *      int)
 	 */
 	@Override
@@ -377,6 +574,64 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			ps.setInt(1, usr.getId());
 			ps.setInt(2, parseInt);
 			ps.executeUpdate();
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario,
+	 *      br.unb.cic.poo.controlefinancas.dominio.Lancamento)
+	 */
+	@Override
+	public void excluirLancamento(Usuario usr, Lancamento l) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("DELETE FROM LANCAMENTO "
+							+ "WHERE ID_USUARIO = ? AND "
+							+ "ID_LANCAMENTO = ?;");
+			ps.setInt(1, usr.getId());
+			ps.setInt(2, l.getId());
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void ExcluirPeriodo(Usuario usr, Periodo p) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("DELETE FROM PERIODOS_CONTABILIZACAO "
+							+ "WHERE ID_USUARIO = ? AND " + "ID_PERIODO = ?;");
+			ps.setInt(1, usr.getId());
+			ps.setInt(2, p.getIdPeriodo());
+			ps.executeUpdate();
+
+			CommitEFechar();
+		} catch (SQLException e) {
+			RollbackEFechar();
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void excluirSubconta(Subconta s) {
+		Conectar();
+		try {
+			PreparedStatement ps = con
+					.prepareStatement("DELETE FROM SUBCONTA "
+							+ "WHERE ID_SUBCONTA = ? ;");
+			ps.setInt(1, s.getId());
+			ps.executeUpdate();
+
 			CommitEFechar();
 		} catch (SQLException e) {
 			RollbackEFechar();
@@ -407,7 +662,65 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 	}
 
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @param p
+	 * @param x
+	 * @throws SQLException
+	 */
+	private int getTotalAcumulado(Periodo p, Conta x) throws SQLException {
+		String sumQ = 
+				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
+				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
+				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
+				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
+				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
+				"" +
+				" WHERE LANCAMENTO.ID_CONTA = ?" +
+				" AND DATA <= ?" +
+				" ORDER BY DATA;";
+		PreparedStatement ps1 = con.prepareStatement(sumQ);
+		
+		ps1.setInt(1, x.getId());
+		ps1.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
+		
+		ResultSet rs1 = ps1.executeQuery();
+		int total = 0;
+		while (rs1.next()) {
+			total = (rs1.getInt(1));
+		}
+		return total;
+	}
+
+	/**
+	 * @param p
+	 * @param x
+	 * @throws SQLException
+	 */
+	private int getTotalAcumuladoSubconta(Periodo p, Subconta s) throws SQLException {
+		String sumQ = 
+				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
+				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
+				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
+				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
+				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
+				"" +
+				" WHERE LANCAMENTO.ID_SUBCONTA1 = ?" +
+				" AND DATA <= ?" +
+				" ORDER BY DATA;";
+		PreparedStatement ps1 = con.prepareStatement(sumQ);
+		
+		ps1.setInt(1, s.getId());
+		ps1.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
+		
+		ResultSet rs1 = ps1.executeQuery();
+		int total = 0;
+		while (rs1.next()) {
+			total = (rs1.getInt(1));
+		}
+		return total;
+	}
+
+	/**
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta#listarContas(br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public ConjuntoContas listarContas(Usuario usr, Periodo p) {
@@ -480,222 +793,8 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		}
 	}
 
-	private void preencherContaComLancamentosSemSubconta(Usuario usr, Conta x,
-			Periodo p) throws SQLException {
-		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE" +
-				" ID_USUARIO = ? AND ID_CONTA = ? AND ID_SUBCONTA1 IS NULL" +
-				" AND DATA >= ? AND DATA <= ?" +
-				" ORDER BY DATA;";
-		PreparedStatement ps1 = con.prepareStatement(buscaLancto);
-		ps1.setInt(1, usr.getId());
-		ps1.setInt(2, x.getId());
-
-		ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
-		ps1.setDate(4, new java.sql.Date(p.getDataFim().paraTime()));
-		ResultSet rs1 = ps1.executeQuery();
-
-		while (rs1.next()) {
-			Lancamento l = new Lancamento();
-			l.setId(rs1.getInt(1));
-			l.setDescricao(rs1.getString(2));
-			l.setValor(rs1.getInt(3));
-			l.setConta(x);
-
-			// converte objeto java.sql.Date para .Data
-			// e preenche o lançamento com a informação
-			l.setData(new MinhaClasseData(rs1.getDate("DATA").getTime()));
-
-			x.getLancamentos().add(l);
-		}
-		
-		// TODO CODIGO ABAIXO DUPLICADO COM O OUtRO METODO DE PREENCHER LANCAMENTOS
-		
-		String sumQ = 
-				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
-				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
-				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
-				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
-				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
-				"" +
-				" WHERE LANCAMENTO.ID_USUARIO = ? AND LANCAMENTO.ID_CONTA = ?" +
-				" AND DATA >= ? AND DATA <= ?" +
-				" ORDER BY DATA;";
-		ps1 = con.prepareStatement(sumQ);
-		
-		ps1.setInt(1, usr.getId());
-		ps1.setInt(2, x.getId());
-		ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
-		ps1.setDate(4, new java.sql.Date(p.getDataFim().paraTime()));
-		
-		rs1 = ps1.executeQuery();
-		while (rs1.next()) {
-			x.setTotal(rs1.getInt(1));
-		}
-	}
-
-	private void preencherSubcontas(Usuario usr, Conta x, Periodo p) throws SQLException {
-		ArrayList<Subconta> subcontas = new ArrayList<Subconta>();
-		
-		String stmt = "SELECT ID_SUBCONTA, NOME, DATA_INICIO, DATA_FIM" +
-				" FROM SUBCONTA WHERE ID_CONTA = ? AND " +
-				"( DATA_INICIO <= ? and" +
-				" DATA_FIM >= ?);";
-		
-		PreparedStatement ps1 = con.prepareStatement(stmt);
-		ps1.setInt(1, x.getId());
-		ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
-		ps1.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
-		
-		ResultSet rs1 = ps1.executeQuery();
-
-		while (rs1.next()) {
-			Subconta s = new Subconta();
-			s.setId(rs1.getInt("ID_SUBCONTA"));
-			s.setNome(rs1.getString("NOME"));
-			
-			// converte objeto java.sql.Date para .Data
-			// e preenche o lançamento com a informação
-			s.setDataInicio(new MinhaClasseData(rs1.getDate("DATA_INICIO").getTime()));
-			s.setDataFim(new MinhaClasseData(rs1.getDate("DATA_FIM").getTime()));
-
-			subcontas.add(s);
-		}
-		
-		for (Subconta s : subcontas)
-		{
-			s.setLancamentos(new ArrayList<Lancamento>());
-			
-			String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE" +
-					" ID_USUARIO = ? AND ID_CONTA = ? AND ID_SUBCONTA1 = ?" +
-					" AND DATA >= ? AND DATA <= ?" +
-					" ORDER BY DATA;";
-			ps1 = con.prepareStatement(buscaLancto);
-			ps1.setInt(1, usr.getId());
-			ps1.setInt(2, x.getId());
-			ps1.setInt(3, s.getId());
-			ps1.setDate(4, new java.sql.Date(p.getDataInicio().paraTime()));
-			ps1.setDate(5, new java.sql.Date(p.getDataFim().paraTime()));
-			rs1 = ps1.executeQuery();
-
-			while (rs1.next()) {
-				Lancamento l = new Lancamento();
-				l.setId(rs1.getInt(1));
-				l.setDescricao(rs1.getString(2));
-				l.setValor(rs1.getInt(3));
-				l.setConta(x);
-
-				// converte objeto java.sql.Date para .Data
-				// e preenche o lançamento com a informação
-				l.setData(new MinhaClasseData(rs1.getDate("DATA").getTime()));
-
-				s.getLancamentos().add(l);
-			}
-				
-			String sumQ = 
-					"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
-					" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
-					" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
-					" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
-					" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
-					"" +
-					" WHERE LANCAMENTO.ID_USUARIO = ? AND LANCAMENTO.ID_SUBCONTA1 = ?" +
-					" AND DATA >= ? AND DATA <= ?" +
-					" ORDER BY DATA;";
-			ps1 = con.prepareStatement(sumQ);
-			
-			ps1.setInt(1, usr.getId());
-			ps1.setInt(2, s.getId());
-			ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
-			ps1.setDate(4, new java.sql.Date(p.getDataFim().paraTime()));
-			
-			rs1 = ps1.executeQuery();
-			while (rs1.next()) {
-				s.setTotal(rs1.getInt(1));
-			}
-			
-			// preencher saldo acumulado de subcontas:
-			s.setSaldoAcumulado(getTotalAcumuladoSubconta(p, s));
-		}
-		
-		x.setSubcontas(subcontas);
-	}
-
 	/**
-	 * @param p
-	 * @param x
-	 * @throws SQLException
-	 */
-	private int getTotalAcumuladoSubconta(Periodo p, Subconta s) throws SQLException {
-		String sumQ = 
-				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
-				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
-				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
-				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
-				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
-				"" +
-				" WHERE LANCAMENTO.ID_SUBCONTA1 = ?" +
-				" AND DATA <= ?" +
-				" ORDER BY DATA;";
-		PreparedStatement ps1 = con.prepareStatement(sumQ);
-		
-		ps1.setInt(1, s.getId());
-		ps1.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
-		
-		ResultSet rs1 = ps1.executeQuery();
-		int total = 0;
-		while (rs1.next()) {
-			total = (rs1.getInt(1));
-		}
-		return total;
-	}
-	
-	private void preencherSaldo(ConjuntoContas cj, Periodo p)
-	throws SQLException {
-		Conta x = cj.getContaRendimentos();		
-		int totalRenda = getTotalAcumulado(p, x);		
-		x = cj.getContaDespesas();		
-		int totalDespesa = getTotalAcumulado(p, x);		
-		cj.setSaldo(totalRenda - totalDespesa);
-		
-		
-		ContaAtivos ca = cj.getContaAtivos();
-		ContaPassivos cp = cj.getContaPassivos();
-		
-		ca.setSaldoAcumulado(getTotalAcumulado(p, ca));
-		cp.setSaldoAcumulado(getTotalAcumulado(p, cp));
-	}
-
-	/**
-	 * @param p
-	 * @param x
-	 * @throws SQLException
-	 */
-	private int getTotalAcumulado(Periodo p, Conta x) throws SQLException {
-		String sumQ = 
-				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
-				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
-				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
-				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
-				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
-				"" +
-				" WHERE LANCAMENTO.ID_CONTA = ?" +
-				" AND DATA <= ?" +
-				" ORDER BY DATA;";
-		PreparedStatement ps1 = con.prepareStatement(sumQ);
-		
-		ps1.setInt(1, x.getId());
-		ps1.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
-		
-		ResultSet rs1 = ps1.executeQuery();
-		int total = 0;
-		while (rs1.next()) {
-			total = (rs1.getInt(1));
-		}
-		return total;
-	}
-
-	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaGrupoGasto#listarGruposGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario)
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto#listarGruposGasto(br.unb.cic.poo.controlefinancas.dominio.Usuario)
 	 */
 	@Override
 	public Collection<GrupoGasto> listarGruposGasto(Usuario usr) {
@@ -747,8 +846,38 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		}
 	}
 
+	@Override
+	public Collection<Subconta> listarSubconta(Usuario usr) {
+		ArrayList<Subconta> p = new ArrayList<Subconta>();
+		Conectar();
+		try {
+			String stmt = " SELECT ID_SUBCONTA, DATA_INICIO, DATA_FIM, SUBCONtA.NOME, subconta.ID_CONTA "
+					+ "FROM SUBCONtA " +
+					"INNER JOIN CONTA ON SUBCONTA.ID_CONTA = CONTA.ID_CONTA " +
+					"WHERE ID_USUARIO = ? ORDER BY DATA_INICIO"
+					+ ";";
+			PreparedStatement ins = con.prepareStatement(stmt);
+			ins.setInt(1, usr.getId());
+			ResultSet rst = ins.executeQuery();
+
+			while (rst.next()) {
+				Subconta m = new Subconta();
+				m.setNome(rst.getString("NOME"));
+				m.setId(rst.getInt("ID_SUBCONTA"));				
+				m.setDataFim(new MinhaClasseData(rst.getDate("DATA_FIM").getTime()));
+				m.setDataInicio(new MinhaClasseData(rst.getDate("DATA_INICIO").getTime()));
+				p.add(m);
+			}
+			Fechar();
+		} catch (SQLException e) {
+			TentarFecharDeNovo();
+			throw new RuntimeException(e);
+		}
+		return p;
+	}
+
 	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario#loginUsuario(java.lang.String,
+	 * @see br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario#loginUsuario(java.lang.String,
 	 *      java.lang.String)
 	 */
 	@Override
@@ -774,6 +903,59 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			throw new RuntimeException(e);
 		}
 		return usr;
+	}
+
+	private void preencherContaComLancamentosSemSubconta(Usuario usr, Conta x,
+			Periodo p) throws SQLException {
+		String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE" +
+				" ID_USUARIO = ? AND ID_CONTA = ? AND ID_SUBCONTA1 IS NULL" +
+				" AND DATA >= ? AND DATA <= ?" +
+				" ORDER BY DATA;";
+		PreparedStatement ps1 = con.prepareStatement(buscaLancto);
+		ps1.setInt(1, usr.getId());
+		ps1.setInt(2, x.getId());
+
+		ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
+		ps1.setDate(4, new java.sql.Date(p.getDataFim().paraTime()));
+		ResultSet rs1 = ps1.executeQuery();
+
+		while (rs1.next()) {
+			Lancamento l = new Lancamento();
+			l.setId(rs1.getInt(1));
+			l.setDescricao(rs1.getString(2));
+			l.setValor(rs1.getInt(3));
+			l.setConta(x);
+
+			// converte objeto java.sql.Date para .Data
+			// e preenche o lancamento com a informaï¿½ï¿½o
+			l.setData(new MinhaClasseData(rs1.getDate("DATA").getTime()));
+
+			x.getLancamentos().add(l);
+		}
+		
+		// TODO CODIGO ABAIXO DUPLICADO COM O OUtRO METODO DE PREENCHER LANCAMENTOS
+		
+		String sumQ = 
+				"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
+				" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
+				" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
+				" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
+				" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
+				"" +
+				" WHERE LANCAMENTO.ID_USUARIO = ? AND LANCAMENTO.ID_CONTA = ?" +
+				" AND DATA >= ? AND DATA <= ?" +
+				" ORDER BY DATA;";
+		ps1 = con.prepareStatement(sumQ);
+		
+		ps1.setInt(1, usr.getId());
+		ps1.setInt(2, x.getId());
+		ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
+		ps1.setDate(4, new java.sql.Date(p.getDataFim().paraTime()));
+		
+		rs1 = ps1.executeQuery();
+		while (rs1.next()) {
+			x.setTotal(rs1.getInt(1));
+		}
 	}
 
 	/**
@@ -806,7 +988,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 			l.setConta(x);
 
 			// converte objeto java.sql.Date para .Data
-			// e preenche o lançamento com a informação
+			// e preenche o lanï¿½amento com a informaï¿½ï¿½o
 			l.setData(new MinhaClasseData(rs1.getDate("DATA").getTime()));
 
 			x.getLancamentos().add(l);
@@ -835,6 +1017,115 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		}
 	}
 
+
+
+	private void preencherSaldo(ConjuntoContas cj, Periodo p)
+	throws SQLException {
+		Conta x = cj.getContaRendimentos();		
+		int totalRenda = getTotalAcumulado(p, x);		
+		x = cj.getContaDespesas();		
+		int totalDespesa = getTotalAcumulado(p, x);		
+		cj.setSaldo(totalRenda - totalDespesa);
+		
+		
+		ContaAtivos ca = cj.getContaAtivos();
+		ContaPassivos cp = cj.getContaPassivos();
+		
+		ca.setSaldoAcumulado(getTotalAcumulado(p, ca));
+		cp.setSaldoAcumulado(getTotalAcumulado(p, cp));
+	}
+
+
+
+	private void preencherSubcontas(Usuario usr, Conta x, Periodo p) throws SQLException {
+		ArrayList<Subconta> subcontas = new ArrayList<Subconta>();
+		
+		String stmt = "SELECT ID_SUBCONTA, NOME, DATA_INICIO, DATA_FIM" +
+				" FROM SUBCONTA WHERE ID_CONTA = ? AND " +
+				"( DATA_INICIO <= ? and" +
+				" DATA_FIM >= ?);";
+		
+		PreparedStatement ps1 = con.prepareStatement(stmt);
+		ps1.setInt(1, x.getId());
+		ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
+		ps1.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
+		
+		ResultSet rs1 = ps1.executeQuery();
+
+		while (rs1.next()) {
+			Subconta s = new Subconta();
+			s.setId(rs1.getInt("ID_SUBCONTA"));
+			s.setNome(rs1.getString("NOME"));
+			
+			// converte objeto java.sql.Date para .Data
+			// e preenche o lanï¿½amento com a informaï¿½ï¿½o
+			s.setDataInicio(new MinhaClasseData(rs1.getDate("DATA_INICIO").getTime()));
+			s.setDataFim(new MinhaClasseData(rs1.getDate("DATA_FIM").getTime()));
+
+			subcontas.add(s);
+		}
+		
+		for (Subconta s : subcontas)
+		{
+			s.setLancamentos(new ArrayList<Lancamento>());
+			
+			String buscaLancto = "SELECT ID_LANCAMENTO, DESCRICAO, VALOR, DATA FROM LANCAMENTO WHERE" +
+					" ID_USUARIO = ? AND ID_CONTA = ? AND ID_SUBCONTA1 = ?" +
+					" AND DATA >= ? AND DATA <= ?" +
+					" ORDER BY DATA;";
+			ps1 = con.prepareStatement(buscaLancto);
+			ps1.setInt(1, usr.getId());
+			ps1.setInt(2, x.getId());
+			ps1.setInt(3, s.getId());
+			ps1.setDate(4, new java.sql.Date(p.getDataInicio().paraTime()));
+			ps1.setDate(5, new java.sql.Date(p.getDataFim().paraTime()));
+			rs1 = ps1.executeQuery();
+
+			while (rs1.next()) {
+				Lancamento l = new Lancamento();
+				l.setId(rs1.getInt(1));
+				l.setDescricao(rs1.getString(2));
+				l.setValor(rs1.getInt(3));
+				l.setConta(x);
+
+				// converte objeto java.sql.Date para .Data
+				// e preenche o lanï¿½amento com a informaï¿½ï¿½o
+				l.setData(new MinhaClasseData(rs1.getDate("DATA").getTime()));
+
+				s.getLancamentos().add(l);
+			}
+				
+			String sumQ = 
+					"SELECT SUM(VALOR * TIPO_GRUPO_GASTO.MULTIPLICADOR * TIPO_CONTA.MULTIPLICADOR) AS TOTAL" +
+					" FROM LANCAMENTO INNER JOIN CONTA ON CONTA.ID_CONTA = LANCAMENTO.ID_CONTA " +
+					" INNER JOIN GRUPO_GASTO ON GRUPO_GASTO.ID_GRUPO_GASTO = LANCAMENTO.ID_GRUPO_GASTO " +
+					" INNER JOIN TIPO_CONTA ON CONTA.ID_TIPO_CONTA = TIPO_CONTA.ID_TIPO_CONTA" +
+					" INNER JOIN TIPO_GRUPO_GASTO ON TIPO_GRUPO_GASTO.ID_TIPO_GRUPO_GASTO = GRUPO_GASTO.ID_TIPO_GRUPO_GASTO" +
+					"" +
+					" WHERE LANCAMENTO.ID_USUARIO = ? AND LANCAMENTO.ID_SUBCONTA1 = ?" +
+					" AND DATA >= ? AND DATA <= ?" +
+					" ORDER BY DATA;";
+			ps1 = con.prepareStatement(sumQ);
+			
+			ps1.setInt(1, usr.getId());
+			ps1.setInt(2, s.getId());
+			ps1.setDate(3, new java.sql.Date(p.getDataInicio().paraTime()));
+			ps1.setDate(4, new java.sql.Date(p.getDataFim().paraTime()));
+			
+			rs1 = ps1.executeQuery();
+			while (rs1.next()) {
+				s.setTotal(rs1.getInt(1));
+			}
+			
+			// preencher saldo acumulado de subcontas:
+			s.setSaldoAcumulado(getTotalAcumuladoSubconta(p, s));
+		}
+		
+		x.setSubcontas(subcontas);
+	}
+
+
+
 	/**
 	 * Da rollback e entao fecha a conexao.
 	 */
@@ -847,6 +1138,16 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	private java.sql.Date soD(java.sql.Date d)
+	{
+		/*d.setHours(0);
+		d.setMinutes(0);
+		d.setSeconds(0);
+		d.setTime(d.getTime() - (d.getTime() % 1000)); */
+		return new java.sql.Date(d.getYear(), d.getMonth(), d.getDate());
+	}
+
 	/**
 	 * TentaFechar a conexao sem soltar excecoes. Para uso em Catchs.
 	 */
@@ -856,305 +1157,6 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	/**
-	 * @see br.unb.cic.poo.controlefinancas.dominio.IPersistenciaLancamentos#excluirLancamento(br.unb.cic.poo.controlefinancas.dominio.Usuario,
-	 *      br.unb.cic.poo.controlefinancas.dominio.Lancamento)
-	 */
-	@Override
-	public void excluirLancamento(Usuario usr, Lancamento l) {
-		Conectar();
-		try {
-			PreparedStatement ps = con
-					.prepareStatement("DELETE FROM LANCAMENTO "
-							+ "WHERE ID_USUARIO = ? AND "
-							+ "ID_LANCAMENTO = ?;");
-			ps.setInt(1, usr.getId());
-			ps.setInt(2, l.getId());
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public Collection<Periodo> buscarPeriodos(Usuario usr) {
-		ArrayList<Periodo> p = new ArrayList<Periodo>();
-		Conectar();
-		try {
-			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
-					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ? ORDER BY DATA_INICIO"
-					+ ";";
-			PreparedStatement ins = con.prepareStatement(stmt);
-			ins.setInt(1, usr.getId());
-			ResultSet rst = ins.executeQuery();
-
-			while (rst.next()) {
-				Periodo m = new Periodo();
-				m.setIdPeriodo(rst.getInt(1));
-				m.setDataFim(new MinhaClasseData(rst.getDate(3).getTime()));
-				m.setDataInicio(new MinhaClasseData(rst.getDate(2).getTime()));
-				p.add(m);
-			}
-			Fechar();
-		} catch (SQLException e) {
-			TentarFecharDeNovo();
-			throw new RuntimeException(e);
-		}
-		return p;
-	}
-
-	@Override
-	public void CadastrarPeriodo(Usuario usr, Periodo p) {
-		Conectar();
-		String s = "INSERT INTO PERIODOS_CONTABILIZACAO (DATA_INICIO, DATA_FIM, ID_USUARIO) VALUES (?,?,?);";
-		try {
-			PreparedStatement ps = con.prepareStatement(s);
-			ps.setDate(1, new java.sql.Date(p.getDataInicio().paraTime()));
-			ps.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
-			ps.setInt(3, usr.getId());
-
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public void EditarPeriodo(Usuario usr, Periodo p) {
-		Conectar();
-		String s = "UPDATE PERIODOS_CONTABILIZACAO SET "
-				+ "DATA_INICIO = ?, DATA_FIM = ?, "
-				+ "ID_USUARIO = ? WHERE ID_PERIODO = ?;";
-		try {
-			PreparedStatement ps = con.prepareStatement(s);
-			ps.setDate(1, new java.sql.Date(p.getDataInicio().paraTime()));
-			ps.setDate(2, new java.sql.Date(p.getDataFim().paraTime()));
-			ps.setInt(3, usr.getId());
-			ps.setInt(4, p.getIdPeriodo());
-
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public void ExcluirPeriodo(Usuario usr, Periodo p) {
-		Conectar();
-		try {
-			PreparedStatement ps = con
-					.prepareStatement("DELETE FROM PERIODOS_CONTABILIZACAO "
-							+ "WHERE ID_USUARIO = ? AND " + "ID_PERIODO = ?;");
-			ps.setInt(1, usr.getId());
-			ps.setInt(2, p.getIdPeriodo());
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public Periodo BuscarPeriodo(Usuario usr, int id) {
-		Periodo p = null;
-		Conectar();
-		try {
-			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
-					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_PERIODO = ? AND ID_USUARIO = ?"
-					+ ";";
-			PreparedStatement ins = con.prepareStatement(stmt);
-			ins.setInt(1, id);
-			ins.setInt(2, usr.getId());
-			ResultSet rst = ins.executeQuery();
-
-			while (rst.next()) {
-				p = new Periodo();
-				p.setIdPeriodo(id);
-				p.setDataFim(new MinhaClasseData(rst.getDate(3).getTime()));
-				p.setDataInicio(new MinhaClasseData(rst.getDate(2).getTime()));
-			}
-			Fechar();
-		} catch (SQLException e) {
-			TentarFecharDeNovo();
-			throw new RuntimeException(e);
-		}
-		return p;
-	}
-
-	@Override
-	public Periodo BuscarPeriodoCorrente(Usuario usr) {
-		MinhaClasseData d = MinhaClasseData.agora();
-		Periodo p = null;
-		Conectar();
-		try {
-			String stmt = " SELECT ID_PERIODO, DATA_INICIO, DATA_FIM "
-					+ "FROM PERIODOS_CONTABILIZACAO WHERE ID_USUARIO = ?"
-					+ " AND DATA_INICIO <= ? AND DATA_FIM >= ?;";
-			PreparedStatement ins = con.prepareStatement(stmt);
-			ins.setInt(1, usr.getId());
-			ins.setDate(2, soD(new java.sql.Date(d.paraTime())));
-			ins.setDate(3, soD(new java.sql.Date(d.paraTime())));
-			ResultSet rst = ins.executeQuery();
-
-			while (rst.next()) {
-				p = new Periodo();
-				p.setIdPeriodo(rst.getInt("ID_PERIODO"));
-				p.setDataFim(new MinhaClasseData(rst.getDate("DATA_FIM").getTime()));
-				p.setDataInicio(new MinhaClasseData(rst.getDate("DATA_INICIO").getTime()));
-			}
-			Fechar();
-		} catch (SQLException e) {
-			TentarFecharDeNovo();
-			throw new RuntimeException(e);
-		}
-		return p;
-	}
-
-
-
-	@Override
-	public void criarSubconta(Subconta s, Conta c) {
-		Conectar();
-		try {
-			PreparedStatement ps = con
-					.prepareStatement("INSERT INTO SUBCONTA " +
-							"(NOME, DATA_INICIO, DATA_FIM, ID_CONTA) VALUES"
-							+ "(?,?,?,?) ;");
-			ps.setString(1, s.getNome());
-			ps.setDate(2,new java.sql.Date(s.getDataInicio().paraTime()));
-			ps.setDate(3,new java.sql.Date(s.getDataFim().paraTime()));
-			ps.setInt(4, c.getId());
-			
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-
-
-	@Override
-	public void editarSubconta(Subconta s, Conta c) {
-		Conectar();
-		try {
-			PreparedStatement ps = con
-					.prepareStatement
-					("UPDATE SUBCONTA " +
-					"SET NOME = ?, " +
-					"DATA_INICIO = ?, " +
-					"DATA_FIM = ?, " +
-					"ID_CONTA = ? " +
-					"WHERE ID_SUBCONTA = ?;");
-			
-			
-			ps.setString(1, s.getNome());
-			ps.setDate(2,new java.sql.Date(s.getDataInicio().paraTime()));
-			ps.setDate(3,new java.sql.Date(s.getDataFim().paraTime()));
-			ps.setInt(4, c.getId());
-			ps.setInt(5, s.getId());
-			
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-
-
-	@Override
-	public void excluirSubconta(Subconta s) {
-		Conectar();
-		try {
-			PreparedStatement ps = con
-					.prepareStatement("DELETE FROM SUBCONTA "
-							+ "WHERE ID_SUBCONTA = ? ;");
-			ps.setInt(1, s.getId());
-			ps.executeUpdate();
-
-			CommitEFechar();
-		} catch (SQLException e) {
-			RollbackEFechar();
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public Subconta buscarSubconta(int id) {
-		Subconta m = null;
-		Conectar();
-		try {
-			String stmt = " SELECT ID_SUBCONTA, DATA_INICIO, DATA_FIM, SUBCONtA.NOME, subconta.ID_CONTA "
-					+ "FROM SUBCONtA " +
-					
-					"WHERE ID_SUBCONTA = ? ORDER BY DATA_INICIO"
-					+ ";";
-			PreparedStatement ins = con.prepareStatement(stmt);
-			ins.setInt(1, id);
-			ResultSet rst = ins.executeQuery();
-
-			while (rst.next()) {
-				m = new Subconta();
-				m.setNome(rst.getString("NOME"));
-				m.setId(rst.getInt("ID_SUBCONTA"));				
-				m.setDataFim(new MinhaClasseData(rst.getDate("DATA_FIM").getTime()));
-				m.setDataInicio(new MinhaClasseData(rst.getDate("DATA_INICIO").getTime()));
-				
-			}
-			Fechar();
-		} catch (SQLException e) {
-			TentarFecharDeNovo();
-			throw new RuntimeException(e);
-		}
-		return m;
-	}
-
-	@Override
-	public Collection<Subconta> listarSubconta(Usuario usr) {
-		ArrayList<Subconta> p = new ArrayList<Subconta>();
-		Conectar();
-		try {
-			String stmt = " SELECT ID_SUBCONTA, DATA_INICIO, DATA_FIM, SUBCONtA.NOME, subconta.ID_CONTA "
-					+ "FROM SUBCONtA " +
-					"INNER JOIN CONTA ON SUBCONTA.ID_CONTA = CONTA.ID_CONTA " +
-					"WHERE ID_USUARIO = ? ORDER BY DATA_INICIO"
-					+ ";";
-			PreparedStatement ins = con.prepareStatement(stmt);
-			ins.setInt(1, usr.getId());
-			ResultSet rst = ins.executeQuery();
-
-			while (rst.next()) {
-				Subconta m = new Subconta();
-				m.setNome(rst.getString("NOME"));
-				m.setId(rst.getInt("ID_SUBCONTA"));				
-				m.setDataFim(new MinhaClasseData(rst.getDate("DATA_FIM").getTime()));
-				m.setDataInicio(new MinhaClasseData(rst.getDate("DATA_INICIO").getTime()));
-				p.add(m);
-			}
-			Fechar();
-		} catch (SQLException e) {
-			TentarFecharDeNovo();
-			throw new RuntimeException(e);
-		}
-		return p;
 	}
 
 }

@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.persistencia.PersistenciaSQLite;
 import br.unb.cic.poo.controlefinancas.persistencia.UsuarioEmMemoria;
 

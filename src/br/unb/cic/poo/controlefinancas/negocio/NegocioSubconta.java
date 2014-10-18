@@ -3,9 +3,9 @@ package br.unb.cic.poo.controlefinancas.negocio;
 import java.util.Collection;
 
 import br.unb.cic.poo.controlefinancas.dominio.Conta;
-import br.unb.cic.poo.controlefinancas.dominio.IPersistenciaSubconta;
 import br.unb.cic.poo.controlefinancas.dominio.Subconta;
 import br.unb.cic.poo.controlefinancas.dominio.Usuario;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaSubconta;
 
 public class NegocioSubconta {
 

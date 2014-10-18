@@ -1,6 +1,7 @@
 package br.unb.cic.poo.controlefinancas.negocio;
 
 import br.unb.cic.poo.controlefinancas.dominio.*;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
 
 /**
  * @author CaioYuri
@@ -21,7 +22,7 @@ public class NegocioContas {
 	/**
 	 * @param usr
 	 * @return conjunto de contas do usuario
-	 * lista as contas do usuário.
+	 * lista as contas do usuï¿½rio.
 	 */
 	public ConjuntoContas listarContas(Usuario usr, Periodo p) {
 		return persistencia.listarContas(usr, p);
