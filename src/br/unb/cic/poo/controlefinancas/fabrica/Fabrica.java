@@ -1,13 +1,16 @@
 package br.unb.cic.poo.controlefinancas.fabrica;
 
 
+import br.unb.cic.poo.controlefinancas.dominio.Usuario;
 import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaConta;
 import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaGrupoGasto;
 import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaLancamentos;
 import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaPeriodo;
+import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaRelatorios;
 import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaSubconta;
 import br.unb.cic.poo.controlefinancas.dominio.interfaces.IPersistenciaUsuario;
 import br.unb.cic.poo.controlefinancas.negocio.*;
+import br.unb.cic.poo.controlefinancas.persistencia.PersistenciaRelatorios;
 
 /**
  * @author CaioYuri
@@ -38,10 +41,14 @@ public abstract class Fabrica {
 		return new NegocioLancamentos(criarPersistenciaLancamentos(), criarPersistenciaGrupoGasto());
 	}
 
-	public NegocioRelatorios criarNegocioRelatorios() {
-		return new NegocioRelatorios(criarPersistenciaConta());
+	public NegocioRelatorios criarNegocioRelatorios(Usuario u) {
+		return new NegocioRelatorios(criarPersistenciaConta(), criarPersistenciaRelatorios(u));
 	}
 	
+	private IPersistenciaRelatorios criarPersistenciaRelatorios(Usuario u) {
+		return new PersistenciaRelatorios(u);
+	}
+
 	/**
 	 * @return uma instancia de NegocioContas
 	 * cria um NegocioContas

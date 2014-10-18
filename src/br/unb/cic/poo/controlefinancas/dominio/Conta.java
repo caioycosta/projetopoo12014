@@ -11,10 +11,10 @@ import java.util.Collection;
  * representa uma conta, de qualquer tipo
  */
 public abstract class Conta {
-	private int total;
 	private int id;
 	private Collection<Lancamento> lancamentos;
 	private Collection<Subconta> subcontas;
+	private int total;
 	
 	/**
 	 * cria novo objeto conta
@@ -25,25 +25,6 @@ public abstract class Conta {
 
 	
 	/**
-	 * @return nome da conta
-	 */
-	public abstract String getNome();
-
-	/**
-	 * @return o total o período
-	 */
-	public int getTotal() {
-		return total;
-	}
-
-	/**
-	 * @param saldo o total para setar
-	 */
-	public void setTotal(int t) {
-		this.total = t;
-	}
-
-	/**
 	 * @return o id
 	 */
 	public int getId() {
@@ -51,17 +32,36 @@ public abstract class Conta {
 	}
 
 	/**
-	 * @param id o id para setar
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
 	 * @return o lancamentos
 	 */
 	public Collection<Lancamento> getLancamentos() {
 		return lancamentos;
+	}
+
+	/**
+	 * @return nome da conta
+	 */
+	public abstract String getNome();
+
+	/**
+	 * @return the subcontas
+	 */
+	public Collection<Subconta> getSubcontas() {
+		return subcontas;
+	}
+
+	/**
+	 * @return o total o perï¿½odo
+	 */
+	public int getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param id o id para setar
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
@@ -73,17 +73,17 @@ public abstract class Conta {
 
 
 	/**
-	 * @return the subcontas
-	 */
-	public Collection<Subconta> getSubcontas() {
-		return subcontas;
-	}
-
-
-	/**
 	 * @param subcontas the subcontas to set
 	 */
 	public void setSubcontas(Collection<Subconta> subcontas) {
 		this.subcontas = subcontas;
+	}
+
+
+	/**
+	 * @param saldo o total para setar
+	 */
+	public void setTotal(int t) {
+		this.total = t;
 	}	
 }

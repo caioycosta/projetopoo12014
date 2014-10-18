@@ -3,7 +3,7 @@
  */
 package br.unb.cic.poo.controlefinancas.dominio;
 
-import java.util.HashMap;
+import java.util.Collection;
 
 
 /**
@@ -11,13 +11,13 @@ import java.util.HashMap;
  *
  */
 public class RelatorioGrupoGasto {
-	HashMap<GrupoGasto, Integer> gastoPorGrupo;
+	Collection<GrupoComValor> gastoPorGrupo;
 
-	public HashMap<GrupoGasto, Integer> getGastoPorGrupo() {
+	public Collection<GrupoComValor> getGastoPorGrupo() {
 		return gastoPorGrupo;
 	}
 
-	public void setGastoPorGrupo(HashMap<GrupoGasto, Integer> gastoPorGrupo) {
+	public void setGastoPorGrupo(Collection<GrupoComValor> gastoPorGrupo) {
 		this.gastoPorGrupo = gastoPorGrupo;
 	}
 }

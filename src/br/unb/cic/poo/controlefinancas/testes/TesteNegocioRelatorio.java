@@ -14,7 +14,8 @@ public class TesteNegocioRelatorio {
 	public void testGerarRelatorio() {
 		StubPersistenciaConta st = new StubPersistenciaConta(
 				30, 20);
-		NegocioRelatorios nr = new NegocioRelatorios(st);
+		// TODO esse null aí
+		NegocioRelatorios nr = new NegocioRelatorios(st, null);
 		
 		Usuario usr = new Usuario();
 		usr.setNome("umnome");

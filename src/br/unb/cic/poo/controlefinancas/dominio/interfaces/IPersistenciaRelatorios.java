@@ -3,6 +3,7 @@
  */
 package br.unb.cic.poo.controlefinancas.dominio.interfaces;
 
+import br.unb.cic.poo.controlefinancas.dominio.Conta;
 import br.unb.cic.poo.controlefinancas.dominio.Periodo;
 import br.unb.cic.poo.controlefinancas.dominio.RelatorioGrupoGasto;
 
@@ -11,5 +12,5 @@ import br.unb.cic.poo.controlefinancas.dominio.RelatorioGrupoGasto;
  *
  */
 public interface IPersistenciaRelatorios {
-	RelatorioGrupoGasto gerarRelatorioGrupoGasto(Periodo p);
+	RelatorioGrupoGasto gerarRelatorioGrupoGasto(Periodo p, Conta c);
 }
