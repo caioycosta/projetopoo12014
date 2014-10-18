@@ -140,7 +140,7 @@ public class RotaSubconta extends Rota {
 				LancamentoViewModel vwb = new LancamentoViewModel();
 
 				vwb.setInfo("Digite os dados do novo subconta.");
-				vwb.setTitulo("Criação de subconta");
+				vwb.setTitulo("CriaÃ§Ã£o de subconta");
 				vwb.setDescricaoView("Criar um novo subconta");
 				preencherViewModelBase(vwb);
 

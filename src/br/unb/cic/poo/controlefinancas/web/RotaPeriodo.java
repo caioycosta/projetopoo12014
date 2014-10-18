@@ -50,9 +50,9 @@ public class RotaPeriodo extends Rota {
 				vwb.setLista(p.buscarPeriodos(usr));
 				preencherViewModelBase(vwb);
 				
-				vwb.setInfo("Veja todos os seus períodos.");
-				vwb.setTitulo("Listagem de perídos");
-				vwb.setDescricaoView("Listar os períodos existentes.");
+				vwb.setInfo("Veja todos os seus perÃ­odos.");
+				vwb.setTitulo("Listagem de perÃ­dos");
+				vwb.setDescricaoView("Listar os perÃ­odos existentes.");
 				
 				return modelAndView(vwb, "periodolistar.ftl");
 			}
@@ -87,9 +87,9 @@ public class RotaPeriodo extends Rota {
 
 				vwb.setPeriodo(p);
 
-				vwb.setInfo("Digite os novos dados do período.");
-				vwb.setTitulo("Edição de lançamento");
-				vwb.setDescricaoView("Alterar um período existente");
+				vwb.setInfo("Digite os novos dados do perÃ­odo.");
+				vwb.setTitulo("EdiÃ§Ã£o de lanÃ§amento");
+				vwb.setDescricaoView("Alterar um perÃ­odo existente");
 				preencherViewModelBase(vwb);
 
 				return modelAndView(vwb, "periodocriar.ftl");
@@ -127,9 +127,9 @@ public class RotaPeriodo extends Rota {
 			public Object tempHandle(Request request, Response response) {
 				LancamentoViewModel vwb = new LancamentoViewModel();
 
-				vwb.setInfo("Digite os dados do novo período.");
-				vwb.setTitulo("Criação de período");
-				vwb.setDescricaoView("Criar um novo período");
+				vwb.setInfo("Digite os dados do novo perÃ­odo.");
+				vwb.setTitulo("CriaÃ§Ã£o de perÃ­odo");
+				vwb.setDescricaoView("Criar um novo perÃ­odo");
 				preencherViewModelBase(vwb);
 
 				return modelAndView(vwb, "periodocriar.ftl");

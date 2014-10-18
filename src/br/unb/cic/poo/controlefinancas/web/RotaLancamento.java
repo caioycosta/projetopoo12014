@@ -59,9 +59,9 @@ public class RotaLancamento extends Rota {
 				vwb.setContas(l.getGrupo().getContas());
 				vwb.setIdGrupo(l.getGrupo().getId());
 				vwb.setLancamento(l);
-				vwb.setInfo("Digite os novos dados do lançamento.");
-				vwb.setTitulo("Edição de lançamento");
-				vwb.setDescricaoView("Alterar um lançamento existente");
+				vwb.setInfo("Digite os novos dados do lanÃ§amento.");
+				vwb.setTitulo("EdiÃ§Ã£o de lanÃ§amento");
+				vwb.setDescricaoView("Alterar um lanÃ§amento existente");
 				preencherViewModelBase(vwb);
 				
 				return modelAndView(vwb, "lancamentocriar.ftl");
@@ -137,9 +137,9 @@ public class RotaLancamento extends Rota {
 				
 
 				
-				vwb.setInfo("Digite os novos dados do lançamento.");
-				vwb.setTitulo("Edição de lançamento");
-				vwb.setDescricaoView("Alterar um lançamento existente");
+				vwb.setInfo("Digite os novos dados do lanÃ§amento.");
+				vwb.setTitulo("EdiÃ§Ã£o de lanÃ§amento");
+				vwb.setDescricaoView("Alterar um lanÃ§amento existente");
 				preencherViewModelBase(vwb);
 				return modelAndView(vwb, "lancamentocriar.ftl");
 			}
@@ -158,9 +158,9 @@ public class RotaLancamento extends Rota {
 
 				vwb.setSubcontas(getFabrica().criarNegocioSubconta().listarSubconta(usr));
 				
-				vwb.setInfo("Digite os dados do novo lançamento.");
-				vwb.setTitulo("Criação de lançamento");
-				vwb.setDescricaoView("Criar um novo lançamento");
+				vwb.setInfo("Digite os dados do novo lanÃ§amento.");
+				vwb.setTitulo("CriaÃ§Ã£o de lanÃ§amento");
+				vwb.setDescricaoView("Criar um novo lanÃ§amento");
 				preencherViewModelBase(vwb);
 				
 				return modelAndView(vwb, "lancamentocriar.ftl");
@@ -234,9 +234,9 @@ public class RotaLancamento extends Rota {
 					vwb.setMensagem("Lancamento cadastro OK");
 				}
 
-				vwb.setInfo("Digite os dados do novo lançamento.");
-				vwb.setTitulo("Criação de lançamento");
-				vwb.setDescricaoView("Criar um novo lançamento");
+				vwb.setInfo("Digite os dados do novo lanÃ§amento.");
+				vwb.setTitulo("CriaÃ§Ã£o de lanÃ§amento");
+				vwb.setDescricaoView("Criar um novo lanÃ§amento");
 				preencherViewModelBase(vwb);
 				return modelAndView(vwb, "lancamentocriar.ftl");
 			}

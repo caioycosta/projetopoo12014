@@ -29,9 +29,9 @@ public class RotaUsuario extends Rota {
 			@Override
 			public Object tempHandle(Request request, Response response) {
 				ViewModelBase vwb = new ViewModelBase();
-				vwb.setInfo("Digite um nome, login e senha para o seu usuário.");
-				vwb.setTitulo("Cadastro de usuário");
-				vwb.setDescricaoView("Criar um novo usuário");
+				vwb.setInfo("Digite um nome, login e senha para o seu usuÃ¡rio.");
+				vwb.setTitulo("Cadastro de usuÃ¡rio");
+				vwb.setDescricaoView("Criar um novo usuÃ¡rio");
 				preencherViewModelBase(vwb);
 
 				return modelAndView(vwb, "usuariocadastrar.ftl");
@@ -43,7 +43,7 @@ public class RotaUsuario extends Rota {
 			public Object tempHandle(Request request, Response response) {
 				ViewModelBase vwb = new ViewModelBase();
 				vwb.setInfo("Digite seu login e senha.");
-				vwb.setTitulo("Login de usuário");
+				vwb.setTitulo("Login de usuÃ¡rio");
 				vwb.setDescricaoView("Entrar com sua conta");
 				preencherViewModelBase(vwb);
 
@@ -68,7 +68,7 @@ public class RotaUsuario extends Rota {
 				}
 				
 				vwb.setInfo("Digite seu login e senha.");
-				vwb.setTitulo("Login de usuário");
+				vwb.setTitulo("Login de usuÃ¡rio");
 				vwb.setDescricaoView("Entrar com sua conta");
 				preencherViewModelBase(vwb);				
 				return modelAndView(vwb, "usuariologin.ftl");
@@ -93,9 +93,9 @@ public class RotaUsuario extends Rota {
 							+ usr.getId());
 				}
 
-				vwb.setInfo("Digite um nome, login e senha para o seu usuário.");
-				vwb.setTitulo("Cadastro de usuário");
-				vwb.setDescricaoView("Criar um novo usuário");
+				vwb.setInfo("Digite um nome, login e senha para o seu usuÃ¡rio.");
+				vwb.setTitulo("Cadastro de usuÃ¡rio");
+				vwb.setDescricaoView("Criar um novo usuÃ¡rio");
 				preencherViewModelBase(vwb);
 				return modelAndView(vwb, "usuariocadastrar.ftl");
 			}

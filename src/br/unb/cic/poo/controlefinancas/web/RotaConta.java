@@ -42,8 +42,8 @@ public class RotaConta extends Rota {
 						.attribute("usuario")), pS);
 				
 				ContaViewModel vwb = new ContaViewModel(c);
-				vwb.setInfo("Veja todas as suas contas. Não esqueça" +
-						" de criar períodos antes de utilizar o sistema.");
+				vwb.setInfo("Veja todas as suas contas. NÃ£o esqueÃ§a" +
+						" de criar perÃ­odos antes de utilizar o sistema.");
 				vwb.setTitulo("Lista das contas");
 				vwb.setDescricaoView("Suas contas");
 				preencherViewModelBase(vwb);
@@ -68,8 +68,8 @@ public class RotaConta extends Rota {
 						.attribute("usuario")), pS);
 				
 				ContaViewModel vwb = new ContaViewModel(c);
-				vwb.setInfo("Veja todas as suas contas. Não esqueça" +
-						" de criar períodos antes de utilizar o sistema.");
+				vwb.setInfo("Veja todas as suas contas. NÃ£o esqueÃ§a" +
+						" de criar perÃ­odos antes de utilizar o sistema.");
 				vwb.setTitulo("Lista das contas");
 				vwb.setDescricaoView("Suas contas");
 				preencherViewModelBase(vwb);

@@ -33,9 +33,9 @@ public class RotaRelatorio extends Rota {
 				NegocioRelatorios nr = getFabrica().criarNegocioRelatorios();
 				ViewModelBase vwb =  new RelatorioPatrimonialViewModel( nr.gerarRelatorio(usr));
 				
-				vwb.setInfo("Veja qual o valor do seu patrimônio.");
-				vwb.setTitulo("Relatório patrimonial");
-				vwb.setDescricaoView("Quando você tem de patrimônio");
+				vwb.setInfo("Veja qual o valor do seu patrimÃ´nio.");
+				vwb.setTitulo("RelatÃ³rio patrimonial");
+				vwb.setDescricaoView("Quando vocÃª tem de patrimÃ´nio");
 				preencherViewModelBase(vwb);
 
 				return modelAndView(vwb, "patrimonial.ftl");
