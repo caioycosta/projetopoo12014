@@ -1145,7 +1145,7 @@ public class PersistenciaSQLite implements IPersistenciaConta,
 		d.setMinutes(0);
 		d.setSeconds(0);
 		d.setTime(d.getTime() - (d.getTime() % 1000)); */
-		return new java.sql.Date(d.getYear(), d.getMonth(), d.getDate());
+		return new java.sql.Date(java.util.Date.UTC(d.getYear(), d.getMonth(), d.getDate(), 3, 0, 0));		
 	}
 
 	/**

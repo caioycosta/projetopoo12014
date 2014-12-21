@@ -1,5 +1,10 @@
 package br.unb.cic.poo.controlefinancas.dominio;
 
+/*
+ * Esta classe tem por objetivo normalizar a criação de objetos
+ * data, já que havia um problema em que alguns lugares era gerada
+ * data local e em outros data GMT. Já com esta classe, todas as datas criadas
+ * serão 3h da manhã em GMT.  */
 public class MinhaClasseData {
 
 	private java.util.Date innerDate;

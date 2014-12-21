@@ -69,15 +69,6 @@ public class ConectorSQLite {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	public java.sql.Date soD(java.sql.Date d)
-	{
-		/*d.setHours(0);
-		d.setMinutes(0);
-		d.setSeconds(0);
-		d.setTime(d.getTime() - (d.getTime() % 1000)); */
-		return new java.sql.Date(d.getYear(), d.getMonth(), d.getDate());
-	}
 
 	/**
 	 * TentaFechar a conexao sem soltar excecoes. Para uso em Catchs.
